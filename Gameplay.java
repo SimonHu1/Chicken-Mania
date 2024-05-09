@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Gameplay extends JLayeredPane implements ActionListener {
-    private Inventory playerInventory;
+    private Inventory playerInventory = new Inventory();
     private int characterY = 200; // Initial character position
     private double yVelocity = 0; // Initial vertical velocity
     private double gravity = 10; // Gravity acceleration
@@ -22,16 +22,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private double timeUntilNextJump = 0.0;
     private double time;
     private int cd;
-    private BufferedImage characterImage;
-    private BufferedImage shovelImage;
-    private BufferedImage watermelonImage;
-    private BufferedImage tractorImage;
-    private BufferedImage seedImage;
-    private BufferedImage backgroundImage;
-    private BufferedImage archaicCallSymbol;
-    private BufferedImage proteggtionSymbol;
-    private BufferedImage seedGaloreSymbol;
-    private BufferedImage egg;
+    private ArrayList<BufferedImage> imagesArray = new ArrayList<>();
     private Timer timer;
     private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     private int lives;
@@ -45,16 +36,16 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private double[] activePowerups = new double[3]; //1.0 = Proteggtion, 2.0 = pecking machine, 3.0 = Archaic Call
     private Shop shop;
     private int eggShield;
-    public Gameplay(Inventory playerInventory,Shop shop) {
+    public Gameplay()
+    {
+        shop = new Shop(playerInventory);
         jumpCount=9;
-        this.shop = shop;
-        this.playerInventory = playerInventory;
         time=0.0;
         seedsThisRun=0;
         run = true;
         inititalizeEndScreen();
-        lives = 3;
-        timer = new Timer(5, this); // 200 FPS (1000 ms / 200)
+        lives = 30000000;
+        timer = new Timer(1, this); // 200 FPS (1000 ms / 200)
         timer.start();
         setFocusable(true); // Allow the panel to receive keyboard input
         addKeyListener(new KeyAdapter() {
@@ -66,16 +57,49 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             }
         });
         try {
-            characterImage = ImageIO.read(new File("Images/ThingieRooster.png"));
-            shovelImage = ImageIO.read(new File("Images/Shovel.png"));
-            watermelonImage = ImageIO.read(new File("Images/Watermelon.png"));
-            tractorImage = ImageIO.read(new File("Images/Tractor.png"));
-            seedImage = ImageIO.read(new File("Images/Seed.png"));
-            backgroundImage = ImageIO.read(new File("Images/Background.png"));
-            archaicCallSymbol = ImageIO.read(new File("Images/Archaic Call Symbol.png"));
-            proteggtionSymbol = ImageIO.read(new File("Images/Proteggtion Symbol.png"));
-            seedGaloreSymbol = ImageIO.read(new File("Images/Seed Galore Symbol.png"));
-            egg = ImageIO.read(new File("Images/Egg.png"));
+            imagesArray.add(ImageIO.read(new File("Images/ThingieRooster.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Shovel.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Watermelon.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Tractor.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Seed.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Background.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Archaic Call Symbol.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Proteggtion Symbol.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Seed Galore Symbol.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public Gameplay(Inventory playerInventory,Shop shop) {
+        jumpCount=9;
+        this.shop = shop;
+        this.playerInventory = playerInventory;
+        time=399.0;
+        seedsThisRun=0;
+        run = true;
+        inititalizeEndScreen();
+        lives = 30000000;
+        timer = new Timer(1, this); // 200 FPS (1000 ms / 200)
+        timer.start();
+        setFocusable(true); // Allow the panel to receive keyboard input
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_W) {
+                    jump();
+                }
+            }
+        });
+        try {
+            imagesArray.add(ImageIO.read(new File("Images/ThingieRooster.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Shovel.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Watermelon.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Tractor.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Seed.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Background.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Archaic Call Symbol.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Proteggtion Symbol.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Seed Galore Symbol.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,11 +107,12 @@ public class Gameplay extends JLayeredPane implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
+        if(imagesArray.size()!=9) return;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setFont(new Font("Monospaced",Font.BOLD,50));
         g2d.fillRect(0, 0, getWidth(), getHeight()); // Clear the screen
-        g2d.drawImage(backgroundImage,0,-100,1920,1080,null);
+        g2d.drawImage(imagesArray.get(5),0,-100,1920,1080,null);
         g2d.drawString("Seeds: "+seedsThisRun,0,50);
         if(eggShield>0.0)
         {
@@ -98,15 +123,15 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             g2d.drawString("Lives: "+lives,0,100);
         }
         g2d.drawString("Jumps: "+jumpCount,0,150);
-        if (characterImage != null) {
-            g2d.drawImage(characterImage, 100, characterY, 70, 70, null);
+        if (imagesArray.get(0) != null) {
+            g2d.drawImage(imagesArray.get(0), 100, characterY, 70, 70, null);
         }
         System.out.println(eggShield);
         if(eggShield<0) eggShield=0;
         if(eggShield==0) activePowerups[0]=0.0;
         if(eggShield>0.0)
         {
-            g2d.drawImage(egg,100,characterY,80,80,null);
+            g2d.drawImage(imagesArray.get(9),100,characterY,80,80,null);
         }
         for(Obstacle o: obstacles)
         {
@@ -119,12 +144,12 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             {
                 if(i==0)
                 {
-                    g2d.drawImage(proteggtionSymbol,1650,0,100,100,null);
+                    g2d.drawImage(imagesArray.get(7),1650,0,100,100,null);
                     g2d.drawString((int)(activePowerups[i]*100)/100+"",1730,120);
                 }
                 if(i==1)
                 {
-                    g2d.drawImage(seedGaloreSymbol,1750,0,100,100,null);
+                    g2d.drawImage(imagesArray.get(8),1750,0,100,100,null);
                     g2d.drawString((int)(activePowerups[i]*100)/100+"",1830,120);
                 }
             }
@@ -135,6 +160,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(imagesArray.size()!=9) return;
         if(!run) return;
         if(lives<=0)
         {
@@ -178,20 +204,20 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         {
             if(Math.random()*1000>=1000-((time+3)/3))
             {
-                obstacles.add(new Shovel(2000+(int)(Math.random()*620),324,72,shovelImage));
+                obstacles.add(new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1)));
                 System.out.println("Shovel made");
                 System.out.println(obstacles.size());
             }
             if(Math.random()*1000>=1000-(time/10)&&!containsTractor&&time>20)
             {
-                obstacles.add(new Tractor(576,420,tractorImage));
+                obstacles.add(new Tractor(576,420,imagesArray.get(3)));
                 System.out.println("Tractor made");
                 System.out.println(obstacles.size());
                 containsTractor=true;
             }
             if(Math.random()*1000>=1000-(time/8)&&time>40)
             {
-                obstacles.add(new Watermelon(100,100,watermelonImage));
+                obstacles.add(new Watermelon(100,100,imagesArray.get(2)));
                 ((Watermelon)obstacles.get(obstacles.size()-1)).setyVelocity((double) ((characterY-(obstacles.get(obstacles.size()-1)).getyVal())*PIXELS_PER_METER-41405)/91);
                 System.out.println("Watermelon made");
                 System.out.println(obstacles.size());
@@ -428,28 +454,28 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             if(random>0.75)
             {
                 int randomY = (int)(Math.random()*780+100);
-                obstacles.add(new Seed(2150,randomY,50,50, seedImage));
-                obstacles.add(new Seed(2200,randomY,50,50, seedImage));
-                obstacles.add(new Seed(2250,randomY,50,50, seedImage));
+                obstacles.add(new Seed(2150,randomY,50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2200,randomY,50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2250,randomY,50,50, imagesArray.get(4)));
             }
             else if(random>0.5)
             {
-                obstacles.add(new Seed(2150,400,50,50, seedImage));
-                obstacles.add(new Seed(2200,450,50,50, seedImage));
-                obstacles.add(new Seed(2250,500,50,50, seedImage));
+                obstacles.add(new Seed(2150,400,50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2200,450,50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2250,500,50,50, imagesArray.get(4)));
             }
             else if(random>0.25)
             {
-                obstacles.add(new Seed(2150,500,50,50, seedImage));
-                obstacles.add(new Seed(2200,450,50,50, seedImage));
-                obstacles.add(new Seed(2250,400,50,50, seedImage));
+                obstacles.add(new Seed(2150,500,50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2200,450,50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2250,400,50,50, imagesArray.get(4)));
             }
             else
             {
                 int randomY = (int)(Math.random()*780+100);
-                obstacles.add(new Seed(2100,(int)(Math.random()*780+100),50,50, seedImage));
-                obstacles.add(new Seed(2100,(int)(Math.random()*780+100),50,50, seedImage));
-                obstacles.add(new Seed(2100,(int)(Math.random()*780+100),50,50, seedImage));
+                obstacles.add(new Seed(2100,(int)(Math.random()*780+100),50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2100,(int)(Math.random()*780+100),50,50, imagesArray.get(4)));
+                obstacles.add(new Seed(2100,(int)(Math.random()*780+100),50,50, imagesArray.get(4)));
             }
         }
     }
@@ -460,15 +486,15 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             double random = Math.random();
             if(random>0.666)
             {
-                obstacles.add(new Powerup(2150,(int)(Math.random()*780+100),75,75,proteggtionSymbol,0));
+                obstacles.add(new Powerup(2150,(int)(Math.random()*780+100),75,75,imagesArray.get(7),0));
             }
             else if(random>0.333)
             {
-                obstacles.add(new Powerup(2150,(int)(Math.random()*780+100),75,75,seedGaloreSymbol,1));
+                obstacles.add(new Powerup(2150,(int)(Math.random()*780+100),75,75,imagesArray.get(8),1));
             }
             else
             {
-                obstacles.add(new Powerup(2150,(int)(Math.random()*780+100),75,75,archaicCallSymbol,2));
+                obstacles.add(new Powerup(2150,(int)(Math.random()*780+100),75,75,imagesArray.get(6),2));
             }
         }
     }
@@ -508,7 +534,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     }
     public Shovel randomShovel()
     {
-        return new Shovel(2000+(int)(Math.random()*620),324,72,shovelImage);
+        return new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1));
     }
     public void selectionSorter(ArrayList<Obstacle> obs)
     {
