@@ -1,3 +1,5 @@
+import Projectiles.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -104,7 +106,6 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             e.printStackTrace();
         }
     }
-
     @Override
     public void paintComponent(Graphics g) {
         if(imagesArray.size()!=9) return;
@@ -205,13 +206,13 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             if(Math.random()*1000>=1000-((time+3)/3))
             {
                 obstacles.add(new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1)));
-                System.out.println("Shovel made");
+                System.out.println("Projectiles.Shovel made");
                 System.out.println(obstacles.size());
             }
             if(Math.random()*1000>=1000-(time/10)&&!containsTractor&&time>20)
             {
                 obstacles.add(new Tractor(576,420,imagesArray.get(3)));
-                System.out.println("Tractor made");
+                System.out.println("Projectiles.Tractor made");
                 System.out.println(obstacles.size());
                 containsTractor=true;
             }
@@ -219,7 +220,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             {
                 obstacles.add(new Watermelon(100,100,imagesArray.get(2)));
                 ((Watermelon)obstacles.get(obstacles.size()-1)).setyVelocity((double) ((characterY-(obstacles.get(obstacles.size()-1)).getyVal())*PIXELS_PER_METER-41405)/91);
-                System.out.println("Watermelon made");
+                System.out.println("Projectiles.Watermelon made");
                 System.out.println(obstacles.size());
             }
             generateSeeds();
@@ -281,7 +282,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         if(obstacles.size()==0) return;
         for(int i = obstacles.size()-1; i>=0;i--)
         {
-            if(obstacles.get(i).getType().equals("Shovel"))
+            if(obstacles.get(i).getType().equals("Projectiles.Shovel"))
             {
                 ((Shovel)obstacles.get(i)).moveLeft((int)(8+Math.pow(time,0.5)));
                 if(obstacles.get(i).getxVal()<-600)
@@ -291,7 +292,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                     System.out.println(obstacles.size());
                 }
             }
-            else if(obstacles.get(i).getType().equals("Tractor"))
+            else if(obstacles.get(i).getType().equals("Projectiles.Tractor"))
             {
                 ((Tractor)obstacles.get(i)).moveLeft((int)(15+Math.pow(time,0.5)));
                 if(obstacles.get(i).getxVal()<-1500)
@@ -302,7 +303,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                     System.out.println(obstacles.size());
                 }
             }
-            else if(obstacles.get(i).getType().equals("Watermelon"))
+            else if(obstacles.get(i).getType().equals("Projectiles.Watermelon"))
             {
                 ((Watermelon)obstacles.get(i)).setyVelocity(((Watermelon)obstacles.get(i)).getyVelocity()+gravity);
                 (obstacles.get(i)).setPos((obstacles.get(i)).getxVal()-20,(obstacles.get(i)).getyVal()+(int)(((Watermelon)obstacles.get(i)).getyVelocity()/PIXELS_PER_METER));
@@ -311,7 +312,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                     obstacles.remove(i);
                 }
             }
-            else if(obstacles.get(i).getType().equals("Seed"))
+            else if(obstacles.get(i).getType().equals("Projectiles.Seed"))
             {
                 ((Seed)obstacles.get(i)).moveLeft((int)(8+Math.pow(time,0.5)));
                 if(obstacles.get(i).getxVal()<0)
@@ -321,7 +322,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                     System.out.println(obstacles.size());
                 }
             }
-            else if(obstacles.get(i).getType().equals("Powerup"))
+            else if(obstacles.get(i).getType().equals("Projectiles.Powerup"))
             {
                 ((Powerup)obstacles.get(i)).moveLeft((int)(8+Math.pow(time,0.5)));
                 if(obstacles.get(i).getxVal()<0)
@@ -341,7 +342,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         for (Obstacle o : obstacles) {
             if (o.getxVal() <= 170 && o.getxVal() + o.getWidth() >= 100){
                 if(o.getyVal() <= characterY + 70 && o.getyVal() + o.getHeight() >= characterY){
-                    if(o.getType().equals("Shovel"))
+                    if(o.getType().equals("Projectiles.Shovel"))
                     {
                         ((Shovel)o).moveLeft(1000);
                         if(cd<0)
@@ -357,7 +358,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                             System.out.println("Hit detected");
                         }
                     }
-                    if(o.getType().equals("Tractor"))
+                    if(o.getType().equals("Projectiles.Tractor"))
                     {
                         ((Tractor)o).moveLeft(1000);
                         if(cd<0)
@@ -373,7 +374,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                             System.out.println("Hit detected");
                         }
                     }
-                    if(o.getType().equals("Watermelon"))
+                    if(o.getType().equals("Projectiles.Watermelon"))
                     {
                         o.setPos(0,5000);
                         if(cd<0)
@@ -389,7 +390,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                             System.out.println("Hit detected");
                         }
                     }
-                    if(o.getType().equals("Seed"))
+                    if(o.getType().equals("Projectiles.Seed"))
                     {
                         ((Seed)o).moveLeft(1000);
                         if(activePowerups[1]>0.0)
@@ -400,7 +401,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                             seedsThisRun++;
                         }
                     }
-                    if(o.getType().equals("Powerup"))
+                    if(o.getType().equals("Projectiles.Powerup"))
                     {
                         activatePowerup(((Powerup)o).getPower());
                         ((Powerup)o).moveLeft(1000);
@@ -513,15 +514,15 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             int i = obstacles.size();
             for(int b = i-1;b>=0&&b>=obstacles.size()-(playerInventory.getUpgrades()[2]+3);b--)
             {
-                if(obstacles.get(b).getType().equals("Shovel"))
+                if(obstacles.get(b).getType().equals("Projectiles.Shovel"))
                 {
                     ((Shovel)obstacles.get(b)).moveLeft(10000);
                 }
-                else if(obstacles.get(b).getType().equals("Tractor"))
+                else if(obstacles.get(b).getType().equals("Projectiles.Tractor"))
                 {
                     ((Tractor)obstacles.get(b)).moveLeft(10000);
                 }
-                else if(obstacles.get(b).getType().equals("Watermelon"))
+                else if(obstacles.get(b).getType().equals("Projectiles.Watermelon"))
                 {
                     (obstacles.get(b)).setPos(0,5000);
                 }

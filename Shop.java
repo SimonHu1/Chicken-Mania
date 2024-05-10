@@ -2,16 +2,19 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class Shop extends JLabel
 {
     private Inventory playerInventory;
+    private ArrayList[] upgradePool;
     private Gameplay gameplay;
     private JLabel seedCount = new JLabel();
     private JButton startRun = new JButton("START RUN");
     private ImageIcon[] shopItemIcons = new ImageIcon[5];
     public Shop(Inventory playerInventory)
     {
+        instantiateUpgradePool();
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
         seedCount.setBounds(100,0,800,100);
         seedCount.setFont(new Font("Monospaced", Font.BOLD, 60));
@@ -31,10 +34,32 @@ public class Shop extends JLabel
         add(startRun);
         add(seedCount);
     }
+    public void instantiateUpgradePool()
+    {
+        ArrayList<Upgrade> commonUpgrades = new ArrayList<>();
+        ArrayList<Upgrade> rareUpgrades = new ArrayList<>();
+        ArrayList<Upgrade> epicUpgrades = new ArrayList<>();
+        ArrayList<Upgrade> legendaryUpgrades = new ArrayList<>();
+        upgradePool = new ArrayList[]{commonUpgrades,rareUpgrades,epicUpgrades,legendaryUpgrades};
+    }
+    public void instantiateUpgrades()
+    {
+        upgradePool[0].add(new Upgrade("Health","",0,0,0));
+        upgradePool[0].add(new Upgrade("Powerup Strength","",1,0,0));
+        upgradePool[0].add(new Upgrade("Jump","",2,0,0));
+        upgradePool[0].add(new Upgrade("Archaic Call Spawn Chance","",3,0,0));
+        upgradePool[0].add(new Upgrade("Proteggtion Spawn Chance","",4,0,0));
+        upgradePool[0].add(new Upgrade("Seeds During Round Spawn Chance","",5,0,0));
+        upgradePool[0].add(new Upgrade("Seeds When Round is Completed","",6,0,0));
+        upgradePool[0].add(new Upgrade("Max Turboflap","",7,0,0));
+        upgradePool[0].add(new Upgrade("Turboflap Regeneration Speed","",8,0,0));
+        upgradePool[0].add(new Upgrade("Time Between Parries","",9,0,0));
+        upgradePool[0].add(new Upgrade("Parry Strength","",10,0,0));
+    }
     public void instantiateShop()
     {
         ShopItemLabel proteggtionPowerup = new ShopItemLabel(this, playerInventory,"Proteggtion", shopItemIcons[0],0,"Increases Proteggtion Uptime and Health");
-        ShopItemLabel seedGalorePowerup = new ShopItemLabel(this, playerInventory,"Seed Galore", shopItemIcons[1],1,"Increases Seed Galore Uptime");
+        ShopItemLabel seedGalorePowerup = new ShopItemLabel(this, playerInventory,"Projectiles.Seed Galore", shopItemIcons[1],1,"Increases Projectiles.Seed Galore Uptime");
         ShopItemLabel archaicCallPowerup = new ShopItemLabel(this, playerInventory,"Archaic Call", shopItemIcons[2],2,"Increases number of obstacles removed by 1");
         ShopItemLabel artOfTheCatUpgrade = new ShopItemLabel(this, playerInventory,"Art Of The Cat", shopItemIcons[3],3,"Increases lives by 1");
         ShopItemLabel featheringHeightsUpgrade = new ShopItemLabel(this, playerInventory,"Feathering Heights", shopItemIcons[4],4,"Increases jumps by 3");

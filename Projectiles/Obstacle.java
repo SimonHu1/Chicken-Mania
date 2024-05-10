@@ -1,3 +1,5 @@
+package Projectiles;
+
 import java.awt.image.BufferedImage;
 
 public class Obstacle
