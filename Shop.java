@@ -44,17 +44,26 @@ public class Shop extends JLabel
     }
     public void instantiateUpgrades()
     {
-        upgradePool[0].add(new Upgrade("Health","",0,0,0));
-        upgradePool[0].add(new Upgrade("Powerup Strength","",1,0,0));
-        upgradePool[0].add(new Upgrade("Jump","",2,0,0));
-        upgradePool[0].add(new Upgrade("Archaic Call Spawn Chance","",3,0,0));
-        upgradePool[0].add(new Upgrade("Proteggtion Spawn Chance","",4,0,0));
-        upgradePool[0].add(new Upgrade("Seeds During Round Spawn Chance","",5,0,0));
-        upgradePool[0].add(new Upgrade("Seeds When Round is Completed","",6,0,0));
-        upgradePool[0].add(new Upgrade("Max Turboflap","",7,0,0));
-        upgradePool[0].add(new Upgrade("Turboflap Regeneration Speed","",8,0,0));
-        upgradePool[0].add(new Upgrade("Time Between Parries","",9,0,0));
-        upgradePool[0].add(new Upgrade("Parry Strength","",10,0,0));
+        //~ for positive buffs,` for negative buffs
+        upgradePool[0].add(new Upgrade("+~ Max Health","Chonk",0,0,0,99));
+        upgradePool[0].add(new Upgrade("+~% buffs received from powerups","Powerup Blessing",1,0,0,99));
+        upgradePool[0].add(new Upgrade("+~ jumps","Feathering Heights",2,0,0,99));
+        upgradePool[0].add(new Upgrade("x~ Archaic Call Spawn Chance","Archaic Call Seeker",3,0,0,99));
+        upgradePool[0].add(new Upgrade("x~ Proteggtion Spawn Chance","Proteggtion Seeker",4,0,0,99));
+        upgradePool[0].add(new Upgrade("x~ Seeds during Round Spawn Chance","Seed Seeker",5,0,0,3));
+        upgradePool[0].add(new Upgrade("+~ Seeds Upon Round Completion","Service Seeds",6,0,0,3));
+        upgradePool[0].add(new Upgrade("+~ Max Turboflap","",7,0,0,2));
+        upgradePool[0].add(new Upgrade("+~ Turboflap Regeneration Speed","Freedom Flight",8,0,0,5));
+        upgradePool[0].add(new Upgrade("-~% Time Between Parries","Quick Claws",9,9,0,10));
+        upgradePool[0].add(new Upgrade("Increases the strength of your parry's by ~","Razor Claws",10,0,0,10));
+        upgradePool[1].add(new Upgrade("Complete Flight Control","Is it a bird, is it a plane, it's... both",11,0,1,1));
+        upgradePool[1].add(new Upgrade("x~ Tool Damage, x` Fruit Damage, x` Vehicle Damage","Tool Mutation",12,0,1,3));
+        upgradePool[1].add(new Upgrade("x~ Fruit Damage, x` Vehicle Damage, x` Tool Damage","Fruit Mutation",13,0,1,3));
+        upgradePool[1].add(new Upgrade("x~ Vehicle Damage, x` Fruit Damage, x` Tool Damage","Vehicle Mutation",14,0,1,3));
+        upgradePool[1].add(new Upgrade("x~ Max Health, -` Seeds Upon Round Completion","Absolute Unit",15,0,1,3));
+        upgradePool[3].add(new Upgrade("Parries have a 10% to create eggsplosions","EGGSPLOSION",31,0,3,1));
+        upgradePool[3].add(new Upgrade("x~ Max Health","Tank",31,0,3,3));
+        upgradePool[3].add(new Upgrade("+66 Max Health, x0 Max Turboflaps, x0 Jumps","Grounded",31,0,3,3));
     }
     public void instantiateShop()
     {
