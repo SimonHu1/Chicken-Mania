@@ -4,7 +4,7 @@ public class Upgrade
 {
     private String description;
     private String upgradeName;
-    private double[] buff;
+    private double[][] buff;
     private int upgradePrice;
     private int upgradeID;
     private int upgradeLevel;
@@ -22,6 +22,6 @@ public class Upgrade
     }
     public void setBuff(double[][] buff)
     {
-
+        this.buff=buff;
     }
 }

@@ -43,7 +43,7 @@ public class Shop extends JLabel
         ArrayList<Upgrade> rareUpgrades = new ArrayList<>();
         ArrayList<Upgrade> epicUpgrades = new ArrayList<>();
         ArrayList<Upgrade> legendaryUpgrades = new ArrayList<>();
-        instantiateUpgradePool();
+        instantiateUpgrades();
     }
     public void instantiateUpgrades()
     {
@@ -66,7 +66,7 @@ public class Shop extends JLabel
         rareUpgrades.add(new Upgrade("x~ Fruit Damage, x` Vehicle Damage, x` Tool Damage","Fruit Mutation",15,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Vehicle Damage, x` Fruit Damage, x` Tool Damage","Vehicle Mutation",16,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Max Health, -` Seeds Upon Round Completion","Absolute Unit",17,0,1,3,12));
-        rareUpgrades.add(new Upgrade("+~% for Obstacles Disappear after Spawning","Mogged to Death",18,0,1,5,10));
+        rareUpgrades.add(new Upgrade("+~% for Obstacles to Disappear after Spawning","Mogged to Death",18,0,1,5,10));
         rareUpgrades.add(new Upgrade("+~ Max Health, +_ Seeds Upon Round Completion","Bandage",19,0,1,5,13));
         rareUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance, x' Damage Received","Googly Goggles",20,0,1,5,15));
         rareUpgrades.add(new Upgrade("+~ Max Health, +_% Health Regeneration Speed, -' Seeds Upon Round Completion","Objective: Survive",21,0,1,3,15));
@@ -79,11 +79,11 @@ public class Shop extends JLabel
         epicUpgrades.add(new Upgrade("x~ Vehicle Damage, -' Seeds Upon Round Completion","Vehicle Venerator",28,0,2,3,17));
         epicUpgrades.add(new Upgrade("x~ Tool Damage, x' Time Between Parries","Tool Tolerance",29,0,2,3,17));
         epicUpgrades.add(new Upgrade("x2 Parry Strength, -20% Time Between Parries, x0 Archaic Call Spawn Chance, x0 Proteggtion Spawn Chance, x0 2x Seed Spawn Chance","1v20",30,0,2,1,22));
-        legendaryUpgrades.add(new Upgrade("Parries have a 10% to create eggsplosions","EGGSPLOSION",31,0,3,3,35));
+        legendaryUpgrades.add(new Upgrade("Parries have a ~% to create eggsplosions","EGGSPLOSION",31,0,3,3,35));
         legendaryUpgrades.add(new Upgrade("x~ Max Health","Supersize Me",31,0,32,3,30));
         legendaryUpgrades.add(new Upgrade("+66 Max Health, x0 Max Turboflaps, x0 Jumps","Grounded",33,0,3,1,30));
         legendaryUpgrades.add(new Upgrade("+15 Seeds Upon Round Completion, x0.1 Max Health","All or Nothing",34,0,3,1,35));
-        legendaryUpgrades.add(new Upgrade("x~ Vehicle Damage, x~ Fruit Damage, x~ Tool Damage","The Mutation",35,0,1,10,10));
+        legendaryUpgrades.add(new Upgrade("x~ Vehicle Damage, x~ Fruit Damage, x~ Tool Damage","The Mutation",35,0,3,10,10));
         setBuffs();
     }
     public void setBuffs()
@@ -104,6 +104,33 @@ public class Shop extends JLabel
         commonUpgrades.get(6).setBuff(new double[][]{{1.3,1.43,1.5}});
         commonUpgrades.get(7).setBuff(new double[][]{{2,4,6}});
         commonUpgrades.get(8).setBuff(new double[][]{{1,2}});
+        commonUpgrades.get(9).setBuff(new double[][]{{5,9,13,17,20}});
+        commonUpgrades.get(10).setBuff(new double[][]{{5,10,15,18,23,27,30,33,36,40}});
+        commonUpgrades.get(11).setBuff(new double[][]{{1,2,3,4,5,6,7,8,9,10}});
+        commonUpgrades.get(12).setBuff(new double[][]{{8,16,24,31,38,45,51,57,63,69}});
+        //rareUpgrades.get(0) is a 1 time upgrade
+        rareUpgrades.get(1).setBuff(new double[][]{{0.75,0.6,0.43,0.375,0.333,0.3,0.27,0.25,0.23,0.21},{1.333,1.666,2.32,2.666,3,3.333,3.7,4,4.35,4.76}});
+        rareUpgrades.get(2).setBuff(new double[][]{{0.75,0.6,0.43,0.375,0.333,0.3,0.27,0.25,0.23,0.21},{1.333,1.666,2.32,2.666,3,3.333,3.7,4,4.35,4.76}});
+        rareUpgrades.get(3).setBuff(new double[][]{{0.75,0.6,0.43,0.375,0.333,0.3,0.27,0.25,0.23,0.21},{1.333,1.666,2.32,2.666,3,3.333,3.7,4,4.35,4.76}});
+        rareUpgrades.get(4).setBuff(new double[][]{{1.25,1.333,1.5},{2,4,6}});
+        rareUpgrades.get(5).setBuff(new double[][]{{5,9,13,17,20}});
+        rareUpgrades.get(6).setBuff(new double[][]{{2,4,6,8,10},{1,2,3,4,5}});
+        rareUpgrades.get(7).setBuff(new double[][]{{1.1,1.18,1.24,1.28,1.3},{1.1,1.18,1.24,1.28,1.3}});
+        rareUpgrades.get(8).setBuff(new double[][]{{4,7,9},{12,22,30},{3,5,6}});
+        //epicUpgrades.get(0) is a 1 time upgrade
+        epicUpgrades.get(1).setBuff(new double[][]{{1.3,1.42,1.5},{1,2,3}});
+        epicUpgrades.get(2).setBuff(new double[][]{{10,15,20},{1,2,3}});
+        epicUpgrades.get(3).setBuff(new double[][]{{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}});
+        //epicUpgrades.get(4) is a 1 time upgrade
+        epicUpgrades.get(5).setBuff(new double[][]{{0.75,0.622,0.5},{5,10,15}});
+        epicUpgrades.get(6).setBuff(new double[][]{{0.75,0.622,0.5},{4,8,12}});
+        epicUpgrades.get(7).setBuff(new double[][]{{0.75,0.622,0.5},{1.5,1.78,2}});
+        //epicUpgrades.get(8) is a 1 time upgrade
+        legendaryUpgrades.get(0).setBuff(new double[][]{{6,11,15}});
+        legendaryUpgrades.get(1).setBuff(new double[][]{{1.9,3.7,5}});
+        //legendaryUpgrades.get(2) is a 1 time upgrade
+        //legendaryUpgrades.get(3) is a 1 time upgrade
+        legendaryUpgrades.get(1).setBuff(new double[][]{{0.91,0.833,0.77,0.71,0.666,0.625,0.588,0.555,0.526,0.5}});
     }
     public void instantiateShop()
     {
