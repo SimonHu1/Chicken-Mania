@@ -24,4 +24,24 @@ public class Upgrade
     {
         this.buff=buff;
     }
+    public int getUpgradePrice()
+    {
+        return upgradePrice;
+    }
+    public String getUpgradeName()
+    {
+        return upgradeName;
+    }
+    public String getDescription()
+    {
+        return description;
+    }
+    public int getUpgradeLevel()
+    {
+        return upgradeLevel;
+    }
+    public int getMaxUpgrades()
+    {
+        return maxUpgrades;
+    }
 }

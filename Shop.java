@@ -137,18 +137,44 @@ public class Shop extends JLabel
         ShopItemLabel proteggtionPowerup = new ShopItemLabel(this, playerInventory,"Proteggtion", shopItemIcons[0],0,"Increases Proteggtion Uptime and Health");
         ShopItemLabel seedGalorePowerup = new ShopItemLabel(this, playerInventory,"Projectiles.Seed Galore", shopItemIcons[1],1,"Increases Projectiles.Seed Galore Uptime");
         ShopItemLabel archaicCallPowerup = new ShopItemLabel(this, playerInventory,"Archaic Call", shopItemIcons[2],2,"Increases number of obstacles removed by 1");
-        ShopItemLabel artOfTheCatUpgrade = new ShopItemLabel(this, playerInventory,"Art Of The Cat", shopItemIcons[3],3,"Increases lives by 1");
-        ShopItemLabel featheringHeightsUpgrade = new ShopItemLabel(this, playerInventory,"Feathering Heights", shopItemIcons[4],4,"Increases jumps by 3");
         proteggtionPowerup.setBounds(0,100,760,180);
         seedGalorePowerup.setBounds(0,280,760,180);
         archaicCallPowerup.setBounds(0,460,760,180);
-        artOfTheCatUpgrade.setBounds(760,100,760,180);
-        featheringHeightsUpgrade.setBounds(760,280,760,180);
         add(proteggtionPowerup);
         add(seedGalorePowerup);
         add(archaicCallPowerup);
-        add(artOfTheCatUpgrade);
-        add(featheringHeightsUpgrade);
+    }
+    public ArrayList<Upgrade> randomUpgrades()
+    {
+        ArrayList<Upgrade> upgradeForRound = new ArrayList<>();
+        int size = 3;
+        if(epicUpgrades.get(4).getUpgradeLevel()==1) size++;
+        while(upgradeForRound.size()!=size)
+        {
+            int random = (int)(Math.random()*100)+1;
+            Upgrade placeholder;
+            if(random>95)
+            {
+                placeholder = legendaryUpgrades.get((int)(Math.random()*legendaryUpgrades.size()));
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+            }
+            else if(random>85)
+            {
+                placeholder = epicUpgrades.get((int)(Math.random()*epicUpgrades.size()));
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+            }
+            else if(random>70)
+            {
+                placeholder = rareUpgrades.get((int)(Math.random()*rareUpgrades.size()));
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+            }
+            else
+            {
+                placeholder = commonUpgrades.get((int)(Math.random()*commonUpgrades.size()));
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+            }
+        }
+        return upgradeForRound;
     }
     public void instantiateShopItemIcons()
     {

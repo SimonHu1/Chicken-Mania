@@ -46,7 +46,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         seedsThisRun=0;
         run = true;
         inititalizeEndScreen();
-        lives = 30000000;
+        lives = 30;
         timer = new Timer(1, this); // 200 FPS (1000 ms / 200)
         timer.start();
         setFocusable(true); // Allow the panel to receive keyboard input
@@ -80,7 +80,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         seedsThisRun=0;
         run = true;
         inititalizeEndScreen();
-        lives = 30000000;
+        lives = 30;
         timer = new Timer(1, this); // 200 FPS (1000 ms / 200)
         timer.start();
         setFocusable(true); // Allow the panel to receive keyboard input
