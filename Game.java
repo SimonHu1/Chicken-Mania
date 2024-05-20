@@ -18,20 +18,15 @@ public class Game extends JFrame
     public Game()
     {
         current = "game";
-        playerInventory = new Inventory();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(800, 600);
         setSize(1920,1080);
         setPreferredSize(new Dimension(1920, 1080));
         setLayout(null);
         setResizable(true);
-        shopMenu = new Shop(playerInventory);
-        gameplay = new Gameplay(playerInventory,shopMenu);
+        gameplay = new Gameplay();
         gameplay.setBounds(0,0,1920,1080);
-        shopMenu.setGameplay(gameplay);
-        add(shopMenu);
         add(gameplay);
-        shopMenu.setVisible(false);
         gameplay.setVisible(true);
         pack();
         setVisible(true);

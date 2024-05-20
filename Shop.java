@@ -15,22 +15,25 @@ public class Shop extends JLabel
     private JLabel seedCount = new JLabel();
     private JButton startRun = new JButton("START RUN");
     private ImageIcon[] shopItemIcons = new ImageIcon[5];
-    public Shop(Inventory playerInventory)
+    public Shop(Gameplay gameplay,Inventory playerInventory)
     {
+        this.gameplay=gameplay;
         instantiateUpgradePool();
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
-        seedCount.setBounds(100,0,800,100);
+        seedCount.setBounds(50,0,800,100);
         seedCount.setFont(new Font("Monospaced", Font.BOLD, 60));
+        seedCount.setForeground(new Color(61, 41, 0));
         this.playerInventory = playerInventory;
         setBounds(190, 50,1530,820);
-        setBackground(new Color(46, 31, 0));
-        setBorder(new LineBorder(Color.BLACK,10));
+        setOpaque(true);
+        setBackground(new Color(161, 144, 111));
+        setBorder(new LineBorder(new Color(61, 41, 0),10));
         startRun.setBounds(1120,660,400,150);
         startRun.setFont(new Font("Monospaced", Font.BOLD, 60));
         startRun.addActionListener(this:: goRun);
         startRun.setBackground(Color.red);
-        startRun.setBorder(new LineBorder(new Color(46, 31, 0),8));
-        startRun.setForeground(new Color(46, 31, 0));
+        startRun.setBorder(new LineBorder(new Color(61, 41, 0),8));
+        startRun.setForeground(new Color(61, 41, 0));
         startRun.setFocusPainted(false);
         instantiateShopItemIcons();
         instantiateShop();
@@ -134,15 +137,15 @@ public class Shop extends JLabel
     }
     public void instantiateShop()
     {
-        ShopItemLabel proteggtionPowerup = new ShopItemLabel(this, playerInventory,"Proteggtion", shopItemIcons[0],0,"Increases Proteggtion Uptime and Health");
-        ShopItemLabel seedGalorePowerup = new ShopItemLabel(this, playerInventory,"Projectiles.Seed Galore", shopItemIcons[1],1,"Increases Projectiles.Seed Galore Uptime");
-        ShopItemLabel archaicCallPowerup = new ShopItemLabel(this, playerInventory,"Archaic Call", shopItemIcons[2],2,"Increases number of obstacles removed by 1");
-        proteggtionPowerup.setBounds(0,100,760,180);
-        seedGalorePowerup.setBounds(0,280,760,180);
-        archaicCallPowerup.setBounds(0,460,760,180);
-        add(proteggtionPowerup);
-        add(seedGalorePowerup);
-        add(archaicCallPowerup);
+        ShopItemLabel upgradeChoice1;
+        ShopItemLabel upgradeChoice2;
+        ShopItemLabel upgradeChoice3;
+        ShopItemLabel upgradeChoice4;
+        ArrayList<Upgrade> upgradesForRound = randomUpgrades();
+        upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        if(upgradesForRound.size()==4) upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
     }
     public ArrayList<Upgrade> randomUpgrades()
     {
@@ -197,11 +200,11 @@ public class Shop extends JLabel
         gameplay.setVisible(true);
         gameplay.setRun(true);
         setVisible(false);
-        gameplay.hideEndScreen();
         gameplay.updateStats();
     }
     public void updateSeedCount()
     {
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
     }
+    public void updateInventory(Inventory inventory){playerInventory=inventory;}
 }

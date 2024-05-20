@@ -15,18 +15,19 @@ public class ShopItemLabel extends JLabel
     private int itemNumber;
     private Inventory playerInventory;
     private Shop shop;
-    public ShopItemLabel(Shop shop, Inventory playerInventory, String name, ImageIcon itemImage, int itemNum, String description)
+    private Upgrade upgrade;
+    public ShopItemLabel(Shop shop, Upgrade upgrade, ImageIcon itemImage)
     {
         this.shop = shop;
-        this.playerInventory = playerInventory;
+        this.upgrade=upgrade;
         setLayout(null);
         NumberFormatter formatter = new NumberFormatter(NumberFormat.getIntegerInstance());
         formatter.setValueClass(Integer.class);
         formatter.setMinimum(1);
         this.description.setColumns(10);
         imageLabel.setIcon(itemImage);
-        itemName.setText(name);
-        itemNumber = itemNum;
+        itemName.setText(upgrade.getUpgradeName());
+        itemNumber = upgrade.getUpgradeID();
         System.out.println(getCost());
         if(getCost()<999)
         {
@@ -37,7 +38,7 @@ public class ShopItemLabel extends JLabel
             costField.setText("Maxed");
             buyButton.setText("MAXED");
         }
-        this.description.setText(description);
+        this.description.setText(upgrade.getDescription());
         this.description.setFont(new Font("Monospaced", Font.BOLD, 35));
         itemName.setFont(new Font("Monospaced", Font.BOLD, 35));
         costField.setFont(new Font("Monospaced", Font.BOLD, 35));
@@ -51,8 +52,8 @@ public class ShopItemLabel extends JLabel
         imageLabel.setBounds(0, 0, 180, 180);
         buyButton.setBounds(580, 0, 180, 180);
         itemName.setBounds(180, 0, 400, 60);
-        costField.setBounds(180,60,400,60);
-        this.description.setBounds(180,120,400,60);
+        costField.setBounds(180,120,400,60);
+        this.description.setBounds(180,60,400,60);
         add(buyButton);
         add(imageLabel);
         add(itemName);

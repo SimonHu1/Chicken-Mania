@@ -44,4 +44,5 @@ public class Upgrade
     {
         return maxUpgrades;
     }
+    public int getUpgradeID(){return upgradeID; }
 }

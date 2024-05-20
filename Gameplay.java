@@ -34,52 +34,18 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private boolean run;
     private int seedsThisRun;
     private boolean containsTractor;
-    private JPanel endScreen = new JPanel();
     private double[] activePowerups = new double[3]; //1.0 = Proteggtion, 2.0 = pecking machine, 3.0 = Archaic Call
     private Shop shop;
     private int eggShield;
-    public Gameplay()
-    {
-        shop = new Shop(playerInventory);
+    public Gameplay() {
         jumpCount=9;
-        time=0.0;
-        seedsThisRun=0;
-        run = true;
-        inititalizeEndScreen();
-        lives = 30;
-        timer = new Timer(1, this); // 200 FPS (1000 ms / 200)
-        timer.start();
-        setFocusable(true); // Allow the panel to receive keyboard input
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_W) {
-                    jump();
-                }
-            }
-        });
-        try {
-            imagesArray.add(ImageIO.read(new File("Images/ThingieRooster.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Shovel.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Watermelon.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Tractor.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Seed.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Background.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Archaic Call Symbol.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Proteggtion Symbol.png")));
-            imagesArray.add(ImageIO.read(new File("Images/Seed Galore Symbol.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public Gameplay(Inventory playerInventory,Shop shop) {
-        jumpCount=9;
-        this.shop = shop;
-        this.playerInventory = playerInventory;
+        this.playerInventory = new Inventory();
+        this.shop = new Shop(this, this.playerInventory);
         time=399.0;
         seedsThisRun=0;
-        run = true;
-        inititalizeEndScreen();
+        run = false;
+        initializeShop();
+        shop.setVisible(true);
         lives = 30;
         timer = new Timer(1, this); // 200 FPS (1000 ms / 200)
         timer.start();
@@ -106,6 +72,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             e.printStackTrace();
         }
     }
+
     @Override
     public void paintComponent(Graphics g) {
         if(imagesArray.size()!=9) return;
@@ -167,7 +134,10 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         {
             selectionSorter(obstacles);
             insertionSorter(obstacles);
-            endScreen.setVisible(true);
+//            endScreen.setVisible(true);
+            shop.setVisible(true);
+            shop.updateSeedCount();
+            shop.updateInventory(playerInventory);
             run = false;
             deathText.setText("SEEDS RECEIVED: " + seedsThisRun);
             int seedsReceived = seedsThisRun;
@@ -410,42 +380,9 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             }
         }
     }
-    public void inititalizeEndScreen()
+    public void initializeShop()
     {
-        add(endScreen);
-        endScreen.add(deathText);
-        endScreen.add(shopButton);
-        endScreen.add(playAgainButton);
-        endScreen.setVisible(false);
-        endScreen.setLayout(null);
-        endScreen.setBounds(560,200,800,700);
-        endScreen.setBackground(new Color(224, 181, 61));
-        endScreen.setBorder(new LineBorder(Color.BLACK,12));
-        deathText.setBounds(100,100,2000,100);
-        deathText.setOpaque(false);
-        deathText.setEditable(false);
-        deathText.setBorder(null);
-        deathText.setFont(new Font("Monospaced", Font.BOLD, 60));
-        deathText.setForeground(new Color(46, 31, 0));
-        deathText.setText("SEEDS RECEIVED: " + seedsThisRun);
-        initializeButtons();
-    }
-    public void initializeButtons()
-    {
-        shopButton.setFont(new Font("Monospaced", Font.BOLD, 60));
-        shopButton.addActionListener(this::goShop);
-        shopButton.setBounds(200,300,400,100);
-        shopButton.setBackground(Color.red);
-        shopButton.setForeground(new Color(46, 31, 0));
-        shopButton.setBorder(new LineBorder(new Color(46, 31, 0),8));
-        shopButton.setFocusPainted(false);
-        playAgainButton.setFont(new Font("Monospaced", Font.BOLD, 60));
-        playAgainButton.addActionListener(this::playAgain);
-        playAgainButton.setBounds(200,450,400,100);
-        playAgainButton.setBackground(Color.red);
-        playAgainButton.setBorder(new LineBorder(new Color(46, 31, 0),8));
-        playAgainButton.setForeground(new Color(46, 31, 0));
-        playAgainButton.setFocusPainted(false);
+        add(shop);
     }
     public void generateSeeds()
     {
@@ -593,14 +530,10 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     {
         updateStats();
         run=true;
-        endScreen.setVisible(false);
+        shop.setVisible(false);
     }
     public void setRun(boolean b)
     {
         run = b;
-    }
-    public void hideEndScreen()
-    {
-        endScreen.setVisible(false);
     }
 }
