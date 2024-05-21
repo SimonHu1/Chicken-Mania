@@ -29,15 +29,7 @@ public class ShopItemLabel extends JLabel
         itemName.setText(upgrade.getUpgradeName());
         itemNumber = upgrade.getUpgradeID();
         System.out.println(getCost());
-        if(getCost()<999)
-        {
-            costField.setText("Cost: " + getCost());
-        }
-        else
-        {
-            costField.setText("Maxed");
-            buyButton.setText("MAXED");
-        }
+        costField.setText("Cost: " + getCost());
         this.description.setText(upgrade.getDescription());
         this.description.setFont(new Font("Monospaced", Font.BOLD, 35));
         itemName.setFont(new Font("Monospaced", Font.BOLD, 35));
@@ -63,28 +55,29 @@ public class ShopItemLabel extends JLabel
     }
     public int getCost()
     {
-        if(itemNumber==0)
-        {
-            int[] proteggtionCosts = new int[]{25,50,100,175,500,1000};
-            return proteggtionCosts[playerInventory.getUpgrades()[itemNumber]];
-        }
-        if(itemNumber==1)
-        {
-            int[] seedGaloreCosts = new int[]{25,50,100,175,500,1000};
-            return seedGaloreCosts[playerInventory.getUpgrades()[itemNumber]];
-        }
-        if(itemNumber==2)
-        {
-            int[] archaicCallCosts = new int[]{15,30,50,85,200,1000};
-            return archaicCallCosts[playerInventory.getUpgrades()[itemNumber]];
-        }
-        if(itemNumber==3)
-        {
-            int[] artOfTheCatCosts = new int[]{10,25,45,80,130,200,1000};
-            return artOfTheCatCosts[playerInventory.getUpgrades()[itemNumber]];
-        }
-        int[] featheringHeightsCosts = new int[]{5,8,15,25,40,60,90,125,200,1000};
-        return featheringHeightsCosts[playerInventory.getUpgrades()[itemNumber]];
+//        if(itemNumber==0)
+//        {
+//            int[] proteggtionCosts = new int[]{25,50,100,175,500,1000};
+//            return proteggtionCosts[playerInventory.getUpgrades()[itemNumber]];
+//        }
+//        if(itemNumber==1)
+//        {
+//            int[] seedGaloreCosts = new int[]{25,50,100,175,500,1000};
+//            return seedGaloreCosts[playerInventory.getUpgrades()[itemNumber]];
+//        }
+//        if(itemNumber==2)
+//        {
+//            int[] archaicCallCosts = new int[]{15,30,50,85,200,1000};
+//            return archaicCallCosts[playerInventory.getUpgrades()[itemNumber]];
+//        }
+//        if(itemNumber==3)
+//        {
+//            int[] artOfTheCatCosts = new int[]{10,25,45,80,130,200,1000};
+//            return artOfTheCatCosts[playerInventory.getUpgrades()[itemNumber]];
+//        }
+//        int[] featheringHeightsCosts = new int[]{5,8,15,25,40,60,90,125,200,1000};
+//        return featheringHeightsCosts[playerInventory.getUpgrades()[itemNumber]];
+        return upgrade.getUpgradePrice();
     }
     public void buy(ActionEvent event)
     {

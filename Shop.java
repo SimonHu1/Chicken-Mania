@@ -13,6 +13,7 @@ public class Shop extends JLabel
     private ArrayList<Upgrade> legendaryUpgrades = new ArrayList<>();
     private Gameplay gameplay;
     private JLabel seedCount = new JLabel();
+    private JButton rerollButton = new JButton("REROLL");
     private JButton startRun = new JButton("START RUN");
     private ImageIcon[] shopItemIcons = new ImageIcon[5];
     public Shop(Gameplay gameplay,Inventory playerInventory)
@@ -24,20 +25,28 @@ public class Shop extends JLabel
         seedCount.setFont(new Font("Monospaced", Font.BOLD, 60));
         seedCount.setForeground(new Color(61, 41, 0));
         this.playerInventory = playerInventory;
-        setBounds(190, 50,1530,820);
+        setBounds(390, 0,1130,920);
         setOpaque(true);
         setBackground(new Color(161, 144, 111));
         setBorder(new LineBorder(new Color(61, 41, 0),10));
-        startRun.setBounds(1120,660,400,150);
+        startRun.setBounds(720,760,400,150);
         startRun.setFont(new Font("Monospaced", Font.BOLD, 60));
         startRun.addActionListener(this:: goRun);
         startRun.setBackground(Color.red);
         startRun.setBorder(new LineBorder(new Color(61, 41, 0),8));
         startRun.setForeground(new Color(61, 41, 0));
         startRun.setFocusPainted(false);
+        rerollButton.setBounds(320,760,400,150);
+        rerollButton.setFont(new Font("Monospaced", Font.BOLD, 60));
+        rerollButton.addActionListener(this:: updateShop);
+        rerollButton.setBackground(Color.red);
+        rerollButton.setBorder(new LineBorder(new Color(61, 41, 0),8));
+        rerollButton.setForeground(new Color(61, 41, 0));
+        rerollButton.setFocusPainted(false);
         instantiateShopItemIcons();
         instantiateShop();
         add(startRun);
+        add(rerollButton);
         add(seedCount);
     }
     public void instantiateUpgradePool()
@@ -59,7 +68,7 @@ public class Shop extends JLabel
         commonUpgrades.add(new Upgrade("x~ 2x Seed Spawn Chance","2x Seed Seeker",5,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance","Seed Sniffing",6,0,0,3,7));
         commonUpgrades.add(new Upgrade("+~ Seeds Upon Round Completion","Service Seeds",7,0,0,3,7));
-        commonUpgrades.add(new Upgrade("+~ Max Turboflap","",8,0,0,2,8));
+        commonUpgrades.add(new Upgrade("+~ Max Turboflap","WINGS",8,0,0,2,8));
         commonUpgrades.add(new Upgrade("+~% Turboflap Regeneration Speed","Freedom Flight",9,0,0,5,7));
         commonUpgrades.add(new Upgrade("-~% Time Between Parries","Quick Claws",10,9,0,10,6));
         commonUpgrades.add(new Upgrade("+~ Parry Strength","Razor Claws",11,0,0,10,5));
@@ -145,7 +154,36 @@ public class Shop extends JLabel
         upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
         upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
         upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
-        if(upgradesForRound.size()==4) upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
+        add(upgradeChoice1);
+        add(upgradeChoice2);
+        add(upgradeChoice3);
+        if(upgradesForRound.size()==4)
+        {
+            upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
+            add(upgradeChoice4);
+        }
+        upgradeChoice1.setBounds(0,100,1000,300);
+        upgradeChoice2.setBounds(0,300,1000,300);
+        upgradeChoice3.setBounds(0,700,1000,300);
+    }
+    public void updateShop(ActionEvent e)
+    {
+        ArrayList<Upgrade> upgradesForRound = randomUpgrades();
+        ShopItemLabel upgradeChoice1;
+        ShopItemLabel upgradeChoice2;
+        ShopItemLabel upgradeChoice3;
+        ShopItemLabel upgradeChoice4;
+        upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        if(upgradesForRound.size()==4)
+        {
+            upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
+            add(upgradeChoice4);
+        }
+        upgradeChoice1.setBounds(0,100,1000,300);
+        upgradeChoice2.setBounds(0,300,1000,300);
+        upgradeChoice3.setBounds(0,700,1000,300);
     }
     public ArrayList<Upgrade> randomUpgrades()
     {
@@ -159,22 +197,46 @@ public class Shop extends JLabel
             if(random>95)
             {
                 placeholder = legendaryUpgrades.get((int)(Math.random()*legendaryUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+                {
+                    if(!upgradeForRound.contains(placeholder))
+                    {
+                        upgradeForRound.add(placeholder);
+                    }
+                }
             }
             else if(random>85)
             {
                 placeholder = epicUpgrades.get((int)(Math.random()*epicUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+                {
+                    if(!upgradeForRound.contains(placeholder))
+                    {
+                        upgradeForRound.add(placeholder);
+                    }
+                }
             }
             else if(random>70)
             {
                 placeholder = rareUpgrades.get((int)(Math.random()*rareUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+                {
+                    if(!upgradeForRound.contains(placeholder))
+                    {
+                        upgradeForRound.add(placeholder);
+                    }
+                }
             }
             else
             {
                 placeholder = commonUpgrades.get((int)(Math.random()*commonUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades()) upgradeForRound.add(placeholder);
+                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+                {
+                    if(!upgradeForRound.contains(placeholder))
+                    {
+                        upgradeForRound.add(placeholder);
+                    }
+                }
             }
         }
         return upgradeForRound;
