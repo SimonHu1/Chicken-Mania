@@ -383,7 +383,6 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     public void initializeShop()
     {
         add(shop);
-        shop.instantiateShop();
     }
     public void generateSeeds()
     {

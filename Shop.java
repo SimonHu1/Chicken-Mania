@@ -11,6 +11,7 @@ public class Shop extends JLabel
     private ArrayList<Upgrade> rareUpgrades = new ArrayList<>();
     private ArrayList<Upgrade> epicUpgrades = new ArrayList<>();
     private ArrayList<Upgrade> legendaryUpgrades = new ArrayList<>();
+    private ShopItemLabel upgradeChoice1, upgradeChoice2, upgradeChoice3, upgradeChoice4;
     private Gameplay gameplay;
     private JLabel seedCount = new JLabel();
     private JButton rerollButton = new JButton("REROLL");
@@ -43,6 +44,7 @@ public class Shop extends JLabel
         rerollButton.setBorder(new LineBorder(new Color(61, 41, 0),8));
         rerollButton.setForeground(new Color(61, 41, 0));
         rerollButton.setFocusPainted(false);
+        rerollButton.setVisible(true);
         instantiateShopItemIcons();
         instantiateShop();
         add(startRun);
@@ -146,10 +148,6 @@ public class Shop extends JLabel
     }
     public void instantiateShop()
     {
-        ShopItemLabel upgradeChoice1;
-        ShopItemLabel upgradeChoice2;
-        ShopItemLabel upgradeChoice3;
-        ShopItemLabel upgradeChoice4;
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
         upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
         upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
@@ -157,33 +155,44 @@ public class Shop extends JLabel
         add(upgradeChoice1);
         add(upgradeChoice2);
         add(upgradeChoice3);
+        System.out.println(upgradesForRound.get(0).getUpgradeName());
+        System.out.println(upgradesForRound.get(1).getUpgradeName());
+        System.out.println(upgradesForRound.get(2).getUpgradeName());
         if(upgradesForRound.size()==4)
         {
             upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
             add(upgradeChoice4);
+            upgradeChoice4.setBounds(0,700,1000,300);
         }
         upgradeChoice1.setBounds(0,100,1000,300);
         upgradeChoice2.setBounds(0,300,1000,300);
-        upgradeChoice3.setBounds(0,700,1000,300);
+        upgradeChoice3.setBounds(0,500,1000,300);
+
     }
+    //UPDATE SHOP NOT WORKING
     public void updateShop(ActionEvent e)
     {
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
-        ShopItemLabel upgradeChoice1;
-        ShopItemLabel upgradeChoice2;
-        ShopItemLabel upgradeChoice3;
-        ShopItemLabel upgradeChoice4;
+        remove(upgradeChoice1);
+        remove(upgradeChoice2);
+        remove(upgradeChoice3);
+        if(upgradesForRound.size()==4) {
+            remove(upgradeChoice4);
+        }
         upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
         upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
         upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        System.out.println(upgradesForRound.get(0).getUpgradeName());
+        System.out.println(upgradesForRound.get(1).getUpgradeName());
+        System.out.println(upgradesForRound.get(2).getUpgradeName());
         if(upgradesForRound.size()==4)
         {
             upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
             add(upgradeChoice4);
+            upgradeChoice4.setBounds(0,700,1000,300);
         }
-        upgradeChoice1.setBounds(0,100,1000,300);
-        upgradeChoice2.setBounds(0,300,1000,300);
-        upgradeChoice3.setBounds(0,700,1000,300);
+        rerollButton.setVisible(false);
+
     }
     public ArrayList<Upgrade> randomUpgrades()
     {

@@ -98,4 +98,8 @@ public class ShopItemLabel extends JLabel
             }
         }
     }
+    public Upgrade getUpgrade()
+    {
+        return upgrade;
+    }
 }
