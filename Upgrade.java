@@ -45,4 +45,13 @@ public class Upgrade
         return maxUpgrades;
     }
     public int getUpgradeID(){return upgradeID; }
+    public int getUpgradeRarity(){return upgradeRarity;}
+    public void incrementUpgrade()
+    {
+        upgradeLevel++;
+    }
+    public void printUpgradeInfo()
+    {
+        System.out.println("Upgrade Name: " + upgradeName + " Upgrade Level: " + upgradeLevel + " Upgrade Rarity: " + upgradeRarity);
+    }
 }

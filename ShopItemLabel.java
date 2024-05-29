@@ -19,6 +19,7 @@ public class ShopItemLabel extends JLabel
     public ShopItemLabel(Shop shop, Upgrade upgrade, ImageIcon itemImage)
     {
         this.shop = shop;
+        playerInventory=shop.getPlayerInventory();
         this.upgrade=upgrade;
         setLayout(null);
         NumberFormatter formatter = new NumberFormatter(NumberFormat.getIntegerInstance());
@@ -31,9 +32,9 @@ public class ShopItemLabel extends JLabel
         System.out.println(getCost());
         costField.setText("Cost: " + getCost());
         this.description.setText(upgrade.getDescription());
-        this.description.setFont(new Font("Monospaced", Font.BOLD, 35));
-        itemName.setFont(new Font("Monospaced", Font.BOLD, 35));
-        costField.setFont(new Font("Monospaced", Font.BOLD, 35));
+        this.description.setFont(new Font("Monospaced", Font.BOLD, 20));
+        itemName.setFont(new Font("Monospaced", Font.BOLD, 20));
+        costField.setFont(new Font("Monospaced", Font.BOLD, 20));
         buyButton.setFont(new Font("Monospaced", Font.BOLD, 52));
         costField.setFocusable(false);
         buyButton.setBackground(Color.GREEN);
@@ -42,10 +43,10 @@ public class ShopItemLabel extends JLabel
         this.description.setEditable(false);
         imageLabel.setBorder(new LineBorder(Color.BLACK));
         imageLabel.setBounds(0, 0, 180, 180);
-        buyButton.setBounds(580, 0, 180, 180);
-        itemName.setBounds(180, 0, 400, 60);
-        costField.setBounds(180,120,400,60);
-        this.description.setBounds(180,60,400,60);
+        buyButton.setBounds(880, 0, 180, 180);
+        itemName.setBounds(180, 0, 700, 60);
+        costField.setBounds(180,120,700,60);
+        this.description.setBounds(180,60,700,60);
         add(buyButton);
         add(imageLabel);
         add(itemName);
@@ -94,7 +95,7 @@ public class ShopItemLabel extends JLabel
         if(playerInventory.getSeed()>=getCost())
         {
             playerInventory.setSeed(playerInventory.getSeed()-getCost());
-            playerInventory.changeUpgrades(itemNumber);
+            shop.incrementUpgrade(upgrade.getUpgradeID(),upgrade.getUpgradeRarity());
             shop.updateSeedCount();
             if(getCost()<999)
             {
@@ -106,6 +107,7 @@ public class ShopItemLabel extends JLabel
                 buyButton.setText("MAXED");
             }
         }
+        this.setVisible(false);
     }
     public Upgrade getUpgrade()
     {

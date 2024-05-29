@@ -22,22 +22,22 @@ public class Shop extends JLabel
         this.gameplay=gameplay;
         instantiateUpgradePool();
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
-        seedCount.setBounds(50,0,800,100);
+        seedCount.setBounds(50,-6,800,100);
         seedCount.setFont(new Font("Monospaced", Font.BOLD, 60));
         seedCount.setForeground(new Color(61, 41, 0));
         this.playerInventory = playerInventory;
-        setBounds(390, 0,1130,920);
+        setBounds(390, 0,1130,970);
         setOpaque(true);
         setBackground(new Color(161, 144, 111));
         setBorder(new LineBorder(new Color(61, 41, 0),10));
-        startRun.setBounds(720,760,400,150);
+        startRun.setBounds(720,810,400,150);
         startRun.setFont(new Font("Monospaced", Font.BOLD, 60));
         startRun.addActionListener(this:: goRun);
         startRun.setBackground(Color.red);
         startRun.setBorder(new LineBorder(new Color(61, 41, 0),8));
         startRun.setForeground(new Color(61, 41, 0));
         startRun.setFocusPainted(false);
-        rerollButton.setBounds(320,760,400,150);
+        rerollButton.setBounds(10,810,400,150);
         rerollButton.setFont(new Font("Monospaced", Font.BOLD, 60));
         rerollButton.addActionListener(this:: updateShop);
         rerollButton.setBackground(Color.red);
@@ -63,8 +63,8 @@ public class Shop extends JLabel
     {
         //~,_for positive buffs,` for negative buffs
         commonUpgrades.add(new Upgrade("+~ Max Health","Chonk",0,0,0,99,5));
-        commonUpgrades.add(new Upgrade("x~ buffs received from powerups","Powerup Blessing",1,0,0,99,3));
-        commonUpgrades.add(new Upgrade("+~ jumps","Feathering Heights",2,0,0,99,2));
+        commonUpgrades.add(new Upgrade("x~ Buffs Received From Powerups","Powerup Blessing",1,0,0,99,3));
+        commonUpgrades.add(new Upgrade("+~ Jumps","Feathering Heights",2,0,0,99,2));
         commonUpgrades.add(new Upgrade("x~ Archaic Call Spawn Chance","Archaic Call Seeker",3,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ Proteggtion Spawn Chance","Proteggtion Seeker",4,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ 2x Seed Spawn Chance","2x Seed Seeker",5,0,0,10,6));
@@ -75,25 +75,25 @@ public class Shop extends JLabel
         commonUpgrades.add(new Upgrade("-~% Time Between Parries","Quick Claws",10,9,0,10,6));
         commonUpgrades.add(new Upgrade("+~ Parry Strength","Razor Claws",11,0,0,10,5));
         commonUpgrades.add(new Upgrade("+~% Health Regeneration Speed","Rapid Regeneration",12,0,0,10,7));
-        rareUpgrades.add(new Upgrade("Complete Flight Control","Is it a bird, is it a plane, it's... both",13,0,1,1,44));
+        rareUpgrades.add(new Upgrade("Complete Flight Control","Is It A Bird, Is It A Plane, It's... Both",13,0,1,1,44));
         rareUpgrades.add(new Upgrade("x~ Tool Damage, x` Fruit Damage, x` Vehicle Damage","Tool Mutation",14,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Fruit Damage, x` Vehicle Damage, x` Tool Damage","Fruit Mutation",15,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Vehicle Damage, x` Fruit Damage, x` Tool Damage","Vehicle Mutation",16,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Max Health, -` Seeds Upon Round Completion","Absolute Unit",17,0,1,3,12));
-        rareUpgrades.add(new Upgrade("+~% for Obstacles to Disappear after Spawning","Mogged to Death",18,0,1,5,10));
+        rareUpgrades.add(new Upgrade("+~% For Obstacles To Disappear After Spawning","Mogged to Death",18,0,1,5,10));
         rareUpgrades.add(new Upgrade("+~ Max Health, +_ Seeds Upon Round Completion","Bandage",19,0,1,5,13));
         rareUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance, x' Damage Received","Googly Goggles",20,0,1,5,15));
         rareUpgrades.add(new Upgrade("+~ Max Health, +_% Health Regeneration Speed, -' Seeds Upon Round Completion","Objective: Survive",21,0,1,3,15));
-        epicUpgrades.add(new Upgrade("+9 jumps, +3 Max Turboflap","Cloud Nine",22,0,2,1,15));
+        epicUpgrades.add(new Upgrade("+9 Jumps, +3 Max Turboflap","Cloud Nine",22,0,2,1,15));
         epicUpgrades.add(new Upgrade("x~ Powerup Spawn Chance, -` Max Turboflap","Outsource",23,0,2,3,15));
         epicUpgrades.add(new Upgrade("+~% Turboflap Regeneration Speed, +_ Parry Strength","Nutrients",24,0,2,3,15));
-        epicUpgrades.add(new Upgrade("+~ Health per Successful Parry, -' Parry Strength","Shock Absorption",25,0,2,15,12));
+        epicUpgrades.add(new Upgrade("+~ Health Per Successful Parry, -' Parry Strength","Shock Absorption",25,0,2,15,12));
         epicUpgrades.add(new Upgrade("+1 Available Upgrade per Round, -2 Seeds Upon Round Completion","Sight Seeing",26,0,2,1,32));
         epicUpgrades.add(new Upgrade("x~ Fruit Damage, -' Max Health","Fruit Fiend",27,0,2,3,17));
         epicUpgrades.add(new Upgrade("x~ Vehicle Damage, -' Seeds Upon Round Completion","Vehicle Venerator",28,0,2,3,17));
         epicUpgrades.add(new Upgrade("x~ Tool Damage, x' Time Between Parries","Tool Tolerance",29,0,2,3,17));
         epicUpgrades.add(new Upgrade("x2 Parry Strength, -20% Time Between Parries, x0 Archaic Call Spawn Chance, x0 Proteggtion Spawn Chance, x0 2x Seed Spawn Chance","1v20",30,0,2,1,22));
-        legendaryUpgrades.add(new Upgrade("Parries have a ~% to create eggsplosions","EGGSPLOSION",31,0,3,3,35));
+        legendaryUpgrades.add(new Upgrade("Parries Have A ~% To Create Eggsplosions","EGGSPLOSION",31,0,3,3,35));
         legendaryUpgrades.add(new Upgrade("x~ Max Health","Supersize Me",31,0,32,3,30));
         legendaryUpgrades.add(new Upgrade("+66 Max Health, x0 Max Turboflaps, x0 Jumps","Grounded",33,0,3,1,30));
         legendaryUpgrades.add(new Upgrade("+15 Seeds Upon Round Completion, x0.1 Max Health","All or Nothing",34,0,3,1,35));
@@ -158,33 +158,40 @@ public class Shop extends JLabel
         System.out.println(upgradesForRound.get(0).getUpgradeName());
         System.out.println(upgradesForRound.get(1).getUpgradeName());
         System.out.println(upgradesForRound.get(2).getUpgradeName());
-        if(upgradesForRound.size()==4)
-        {
-            upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
-            add(upgradeChoice4);
-            upgradeChoice4.setBounds(0,700,1000,300);
-        }
-        upgradeChoice1.setBounds(0,100,1000,300);
-        upgradeChoice2.setBounds(0,300,1000,300);
-        upgradeChoice3.setBounds(0,500,1000,300);
+//        if(upgradesForRound.size()==4)
+//        {
+//            upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
+//            add(upgradeChoice4);
+//            upgradeChoice4.setBounds(20,700,1200,300);
+//        }
+        upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        add(upgradeChoice4);
+        upgradeChoice4.setVisible(false);
+        upgradeChoice1.setBounds(20,84,1200,300);
+        upgradeChoice2.setBounds(20,266,1200,300);
+        upgradeChoice3.setBounds(20,448,1200,300);
+        upgradeChoice4.setBounds(20,630,1200,300);
 
     }
-    //UPDATE SHOP NOT WORKING
     public void updateShop(ActionEvent e)
     {
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
         upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice1.setVisible(true);
         upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice2.setVisible(true);
         upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice3.setVisible(true);
         System.out.println(upgradesForRound.get(0).getUpgradeName());
         System.out.println(upgradesForRound.get(1).getUpgradeName());
         System.out.println(upgradesForRound.get(2).getUpgradeName());
         if(upgradesForRound.size()==4)
         {
             upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon());
-            upgradeChoice4.setBounds(0,700,1000,300);
+            upgradeChoice4.setVisible(true);
+//            upgradeChoice4.setBounds(20,700,1200,300);
         }
-        rerollButton.setVisible(false);
+//        rerollButton.setVisible(false);
 
     }
     public ArrayList<Upgrade> randomUpgrades()
@@ -196,7 +203,7 @@ public class Shop extends JLabel
         {
             int random = (int)(Math.random()*100)+1;
             Upgrade placeholder;
-            if(random>95)
+            if(random>96)
             {
                 placeholder = legendaryUpgrades.get((int)(Math.random()*legendaryUpgrades.size()));
                 if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
@@ -218,7 +225,7 @@ public class Shop extends JLabel
                     }
                 }
             }
-            else if(random>70)
+            else if(random>60)
             {
                 placeholder = rareUpgrades.get((int)(Math.random()*rareUpgrades.size()));
                 if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
@@ -265,10 +272,46 @@ public class Shop extends JLabel
         gameplay.setRun(true);
         setVisible(false);
         gameplay.updateStats();
+        updateShop(actionEvent);
+        for(int i=0;i<commonUpgrades.size();i++)
+        {
+            commonUpgrades.get(i).printUpgradeInfo();
+        }
+        for(int i=0;i<rareUpgrades.size();i++)
+        {
+            rareUpgrades.get(i).printUpgradeInfo();
+        }
+        for(int i=0;i<epicUpgrades.size();i++)
+        {
+            epicUpgrades.get(i).printUpgradeInfo();
+        }
+        for(int i=0;i<legendaryUpgrades.size();i++)
+        {
+            legendaryUpgrades.get(i).printUpgradeInfo();
+        }
     }
     public void updateSeedCount()
     {
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
     }
     public void updateInventory(Inventory inventory){playerInventory=inventory;}
+    public void incrementUpgrade(int upgradeID, int upgradeRarity)
+    {
+        ArrayList<Upgrade> list = new ArrayList();
+        if(upgradeRarity==0){list=commonUpgrades;}
+        else if(upgradeRarity==1){list=rareUpgrades;}
+        else if(upgradeRarity==2){list=epicUpgrades;}
+        else{list=legendaryUpgrades;}
+        for(int i=0; i<list.size(); i++)
+        {
+            if(list.get(i).getUpgradeID()==upgradeID)
+            {
+                list.get(i).incrementUpgrade();
+            }
+        }
+    }
+    public Inventory getPlayerInventory()
+    {
+        return playerInventory;
+    }
 }
