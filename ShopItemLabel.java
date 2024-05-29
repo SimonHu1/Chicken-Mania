@@ -53,6 +53,15 @@ public class ShopItemLabel extends JLabel
         add(this.description);
         buyButton.addActionListener(this::buy);
     }
+    public void updateLabel(Upgrade upgrade, ImageIcon itemImage)
+    {
+        this.upgrade = upgrade;
+        imageLabel.setIcon(itemImage);
+        itemName.setText(upgrade.getUpgradeName());
+        itemNumber = upgrade.getUpgradeID();
+        costField.setText("Cost: " + getCost());
+        this.description.setText(upgrade.getDescription());
+    }
     public int getCost()
     {
 //        if(itemNumber==0)

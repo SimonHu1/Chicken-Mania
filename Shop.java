@@ -173,22 +173,15 @@ public class Shop extends JLabel
     public void updateShop(ActionEvent e)
     {
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
-        remove(upgradeChoice1);
-        remove(upgradeChoice2);
-        remove(upgradeChoice3);
-        if(upgradesForRound.size()==4) {
-            remove(upgradeChoice4);
-        }
-        upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
-        upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
-        upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon());
         System.out.println(upgradesForRound.get(0).getUpgradeName());
         System.out.println(upgradesForRound.get(1).getUpgradeName());
         System.out.println(upgradesForRound.get(2).getUpgradeName());
         if(upgradesForRound.size()==4)
         {
-            upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(3),new ImageIcon());
-            add(upgradeChoice4);
+            upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon());
             upgradeChoice4.setBounds(0,700,1000,300);
         }
         rerollButton.setVisible(false);
