@@ -10,6 +10,8 @@ public class Obstacle
     private int height;
     private BufferedImage icon;
     private String type;
+    private boolean isParried;
+    private int damage;
     public Obstacle(int xVal, int yVal, int width, int height, BufferedImage icon,String type)
     {
         this.xVal = xVal;
@@ -18,6 +20,16 @@ public class Obstacle
         this.height = height;
         this.icon = icon;
         this.type = type;
+    }
+    public Obstacle(int xVal, int yVal, int width, int height, BufferedImage icon,String type, int damage)
+    {
+        this.xVal = xVal;
+        this.yVal = yVal;
+        this.width = width;
+        this.height = height;
+        this.icon = icon;
+        this.type = type;
+        this.damage = damage;
     }
     public void setPos(int x, int y)
     {
@@ -52,5 +64,17 @@ public class Obstacle
     public boolean equals(Obstacle other)
     {
         return(type.equals(other.type)&&width==other.width&&height==other.height);
+    }
+    public int getDamage()
+    {
+         return damage;
+    }
+    public boolean getIsParried()
+    {
+        return isParried;
+    }
+    public void setParried(boolean b)
+    {
+        isParried = b;
     }
 }

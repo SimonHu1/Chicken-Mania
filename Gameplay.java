@@ -17,27 +17,21 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private Inventory playerInventory = new Inventory();
     private int characterY = 200; // Initial character position
     private double yVelocity = 0; // Initial vertical velocity
-    private double gravity = 10; // Gravity acceleration
-    private int jumpCount;
+    private double gravity = 16; // Gravity acceleration
+    private int jumpCount, cd, lives, seedsThisRun, eggShield, round;
     private final int PIXELS_PER_METER = 50; // Conversion factor for physics simulation
-    private double airTime = 0.0; // Time in the air
-    private double timeUntilNextJump = 0.0;
-    private double time;
-    private int cd;
+    private double airTime, timeUntilNextJump, time, parryUptime, parryCooldown;
     private ArrayList<BufferedImage> imagesArray = new ArrayList<>();
     private Timer timer;
     private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
-    private int lives;
     private JButton shopButton = new JButton("SHOP");
     private JButton playAgainButton = new JButton("PLAY AGAIN");
     private JTextField deathText = new JTextField();
-    private boolean run;
-    private int seedsThisRun;
-    private boolean containsTractor;
+    private boolean run, containsTractor;
     private double[] activePowerups = new double[3]; //1.0 = Proteggtion, 2.0 = pecking machine, 3.0 = Archaic Call
     private Shop shop;
-    private int eggShield;
     public Gameplay() {
+        round=1;
         jumpCount=9;
         this.playerInventory = new Inventory();
         this.shop = new Shop(this, this.playerInventory);
@@ -58,6 +52,14 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                 }
             }
         });
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_Q) {
+                    parry();
+                }
+            }
+        });
         try {
             imagesArray.add(ImageIO.read(new File("Images/ThingieRooster.png")));
             imagesArray.add(ImageIO.read(new File("Images/Shovel.png")));
@@ -68,6 +70,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             imagesArray.add(ImageIO.read(new File("Images/Archaic Call Symbol.png")));
             imagesArray.add(ImageIO.read(new File("Images/Proteggtion Symbol.png")));
             imagesArray.add(ImageIO.read(new File("Images/Seed Galore Symbol.png")));
+            imagesArray.add(ImageIO.read(new File("Images/Egg.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,7 +78,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        if(imagesArray.size()!=9) return;
+        if(imagesArray.size()!=10) return;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setFont(new Font("Monospaced",Font.BOLD,50));
@@ -91,6 +94,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             g2d.drawString("Lives: "+lives,0,100);
         }
         g2d.drawString("Jumps: "+jumpCount,0,150);
+        g2d.drawString("Parry: "+parryUptime,300,150);
         if (imagesArray.get(0) != null) {
             g2d.drawImage(imagesArray.get(0), 100, characterY, 70, 70, null);
         }
@@ -128,7 +132,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(imagesArray.size()!=9) return;
+        if(imagesArray.size()!=10) return;
         if(!run) return;
         if(lives<=0)
         {
@@ -175,21 +179,22 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         {
             if(Math.random()*1000>=1000-((time+3)/3))
             {
-                obstacles.add(new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1)));
+                obstacles.add(new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1),calcDamage(1)));
                 System.out.println("Projectiles.Shovel made");
                 System.out.println(obstacles.size());
             }
             if(Math.random()*1000>=1000-(time/10)&&!containsTractor&&time>20)
             {
-                obstacles.add(new Tractor(576,420,imagesArray.get(3)));
+                obstacles.add(new Tractor(576,420,imagesArray.get(3),calcDamage(1)));
                 System.out.println("Projectiles.Tractor made");
                 System.out.println(obstacles.size());
                 containsTractor=true;
             }
             if(Math.random()*1000>=1000-(time/8)&&time>40)
             {
-                obstacles.add(new Watermelon(100,100,imagesArray.get(2)));
-                ((Watermelon)obstacles.get(obstacles.size()-1)).setyVelocity((double) ((characterY-(obstacles.get(obstacles.size()-1)).getyVal())*PIXELS_PER_METER-41405)/91);
+                obstacles.add(new Watermelon(100,100,imagesArray.get(2),calcDamage(3)));
+                ((Watermelon)obstacles.get(obstacles.size()-1)).setyVelocity((double) ((characterY-(obstacles.get(obstacles.size()-1)).getyVal())*PIXELS_PER_METER-66248)/91);
+                //41405/91: 41405 is with 10 grav; 91 is frames it takes for x to match
                 System.out.println("Projectiles.Watermelon made");
                 System.out.println(obstacles.size());
             }
@@ -204,6 +209,8 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         yVelocity += gravity;
         airTime+=0.1;
         time+=0.015;
+        parryUptime-=0.04;
+        parryCooldown-=0.015;
         for(int i = 0; i<2; i++)
         {
             if(activePowerups[i]>0.0)
@@ -242,9 +249,16 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     public void jump() {
         if ((characterY == getHeight() - 180)||(jumpCount>0&&airTime>0.5&&timeUntilNextJump>1.0))
         {
-            yVelocity = -7 * PIXELS_PER_METER;
+            yVelocity = -12 * PIXELS_PER_METER;
             jumpCount--;
             timeUntilNextJump = 0.0;
+        }
+    }
+    public void parry(){
+        if(parryCooldown<0)
+        {
+            parryCooldown = 1;
+            parryUptime = 1;
         }
     }
     public void updateObstacles()
@@ -314,15 +328,19 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                 if(o.getyVal() <= characterY + 70 && o.getyVal() + o.getHeight() >= characterY){
                     if(o.getType().equals("Projectiles.Shovel"))
                     {
-                        ((Shovel)o).moveLeft(1000);
+                        if(parryUptime>0)
+                        {
+                            o.setParried(true);
+                            cd=20;
+                        }
                         if(cd<0)
                         {
                             if(eggShield>0)
                             {
-                                eggShield-=2;
+                                eggShield-=o.getDamage();
                             }
                             else {
-                                lives-=2;
+                                lives-=o.getDamage();
                             }
                             cd=20;
                             System.out.println("Hit detected");
@@ -330,15 +348,19 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                     }
                     if(o.getType().equals("Projectiles.Tractor"))
                     {
-                        ((Tractor)o).moveLeft(1000);
+                        if(parryUptime>0)
+                        {
+                            o.setParried(true);
+                            cd=20;
+                        }
                         if(cd<0)
                         {
                             if(eggShield>0)
                             {
-                                eggShield-=3;
+                                eggShield-=o.getDamage();
                             }
                             else {
-                                lives-=3;
+                                lives-=o.getDamage();
                             }
                             cd=20;
                             System.out.println("Hit detected");
@@ -351,10 +373,10 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                         {
                             if(eggShield>0)
                             {
-                                eggShield--;
+                                eggShield-=o.getDamage();
                             }
                             else {
-                                lives--;
+                                lives-=o.getDamage();
                             }
                             cd=20;
                             System.out.println("Hit detected");
@@ -472,7 +494,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     }
     public Shovel randomShovel()
     {
-        return new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1));
+        return new Shovel(2000+(int)(Math.random()*620),324,72,imagesArray.get(1),calcDamage(1));
     }
     public void selectionSorter(ArrayList<Obstacle> obs)
     {
@@ -492,6 +514,16 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             obs.set(smallest,temp);
             smallest=j+1;
         }
+    }
+    public int calcDamage(int t)
+    {
+        switch(t)
+        {
+            case 1: return 2+(round/3);
+            case 2: return 8+(round/3);
+            case 3: return 1+(round/5);
+        }
+        return 0;
     }
     public void insertionSorter(ArrayList<Obstacle> obs)
     {

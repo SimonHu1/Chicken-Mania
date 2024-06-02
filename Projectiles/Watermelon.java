@@ -13,6 +13,10 @@ public class Watermelon extends Obstacle
         super(1920,(int)(Math.random()*1080),width,height,icon,"Projectiles.Watermelon");
 //        super(1920,450,width,height,icon,"Projectiles.Watermelon");
     }
+    public Watermelon(int width, int height, BufferedImage icon,int damage)
+    {
+        super(1920,(int)(Math.random()*1080),width,height,icon,"Projectiles.Watermelon",damage);
+    }
     public void setyVelocity(double y)
     {
         yVelocity = y;
