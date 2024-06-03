@@ -22,6 +22,11 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private final int PIXELS_PER_METER = 50; // Conversion factor for physics simulation
     private double airTime, timeUntilNextJump, time, parryUptime, parryCooldown;
     private ArrayList<BufferedImage> imagesArray = new ArrayList<>();
+    private ArrayList<BufferedImage> commonUpgradeIcons = new ArrayList<>();
+    private ArrayList<BufferedImage> rareUpgradeIcons = new ArrayList<>();
+    private ArrayList<BufferedImage> epicUpgradeIcons = new ArrayList<>();
+    private ArrayList<BufferedImage> legendaryUpgradeIcons = new ArrayList<>();
+
     private Timer timer;
     private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     private JButton shopButton = new JButton("SHOP");
@@ -47,7 +52,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_W) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     jump();
                 }
             }
@@ -57,6 +62,22 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_Q) {
                     parry();
+                }
+            }
+        });
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_W && shop.getRareUpgrades().get(0).getUpgradeLevel()==1) {
+                    changeY(10);
+                }
+            }
+        });
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_S && shop.getRareUpgrades().get(0).getUpgradeLevel()==1) {
+                    changeY(-10);
                 }
             }
         });
@@ -260,6 +281,10 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             parryCooldown = 1;
             parryUptime = 1;
         }
+    }
+    public void changeY(int v)
+    {
+        yVelocity = -v * PIXELS_PER_METER;
     }
     public void updateObstacles()
     {
@@ -525,18 +550,14 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         }
         return 0;
     }
-    public void insertionSorter(ArrayList<Obstacle> obs)
-    {
+    public void insertionSorter(ArrayList<Obstacle> obs) {
         Obstacle temp;
-        for(int j = 1; j<obs.size();j++)
-        {
-            for (int i = j; i>0; i--)
-            {
-                if(obs.get(i).getxVal()<obs.get(i-1).getxVal())
-                {
-                    temp = obs.get(i-1);
-                    obs.set(i-1,obs.get(i));
-                    obs.set(i,temp);
+        for (int j = 1; j < obs.size(); j++) {
+            for (int i = j; i > 0; i--) {
+                if (obs.get(i).getxVal() < obs.get(i - 1).getxVal()) {
+                    temp = obs.get(i - 1);
+                    obs.set(i - 1, obs.get(i));
+                    obs.set(i, temp);
                 }
             }
         }
@@ -567,5 +588,9 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     public void setRun(boolean b)
     {
         run = b;
+    }
+    public int getRound()
+    {
+        return round;
     }
 }

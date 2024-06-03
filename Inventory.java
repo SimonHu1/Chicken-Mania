@@ -4,7 +4,7 @@ public class Inventory
     private int[] upgrades;
     public Inventory()
     {
-        seed = 100;
+        seed = 10000;
         upgrades = new int[]{0,0,0,0,0};
         //first number indicates type
         //second number indicates upgrade level or true/false

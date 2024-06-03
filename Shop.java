@@ -1,8 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 public class Shop extends JLabel
 {
@@ -11,15 +15,19 @@ public class Shop extends JLabel
     private ArrayList<Upgrade> rareUpgrades = new ArrayList<>();
     private ArrayList<Upgrade> epicUpgrades = new ArrayList<>();
     private ArrayList<Upgrade> legendaryUpgrades = new ArrayList<>();
+    private ArrayList<BufferedImage> upgradeIcons = new ArrayList<>();
     private ShopItemLabel upgradeChoice1, upgradeChoice2, upgradeChoice3, upgradeChoice4;
     private Gameplay gameplay;
     private JLabel seedCount = new JLabel();
     private JButton rerollButton = new JButton("REROLL");
     private JButton startRun = new JButton("START RUN");
     private ImageIcon[] shopItemIcons = new ImageIcon[5];
+    private int rerollPrice;
     public Shop(Gameplay gameplay,Inventory playerInventory)
     {
         this.gameplay=gameplay;
+        rerollPrice=6;
+        instantiateUpgradeIcons();
         instantiateUpgradePool();
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
         seedCount.setBounds(50,-6,800,100);
@@ -38,11 +46,12 @@ public class Shop extends JLabel
         startRun.setForeground(new Color(61, 41, 0));
         startRun.setFocusPainted(false);
         rerollButton.setBounds(10,810,400,150);
-        rerollButton.setFont(new Font("Monospaced", Font.BOLD, 60));
+        rerollButton.setFont(new Font("Monospaced", Font.BOLD, 32));
         rerollButton.addActionListener(this:: updateShop);
         rerollButton.setBackground(Color.red);
         rerollButton.setBorder(new LineBorder(new Color(61, 41, 0),8));
         rerollButton.setForeground(new Color(61, 41, 0));
+        rerollButton.setText("REROLL ("+ rerollPrice + " Seeds)");
         rerollButton.setFocusPainted(false);
         rerollButton.setVisible(true);
         instantiateShopItemIcons();
@@ -68,7 +77,7 @@ public class Shop extends JLabel
         commonUpgrades.add(new Upgrade("x~ Archaic Call Spawn Chance","Archaic Call Seeker",3,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ Proteggtion Spawn Chance","Proteggtion Seeker",4,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ 2x Seed Spawn Chance","2x Seed Seeker",5,0,0,10,6));
-        commonUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance","Seed Sniffing",6,0,0,3,7));
+        commonUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance","4 Leaf Clover",6,0,0,3,7));
         commonUpgrades.add(new Upgrade("+~ Seeds Upon Round Completion","Service Seeds",7,0,0,3,7));
         commonUpgrades.add(new Upgrade("+~ Max Turboflap","WINGS",8,0,0,2,8));
         commonUpgrades.add(new Upgrade("+~% Turboflap Regeneration Speed","Freedom Flight",9,0,0,5,7));
@@ -80,7 +89,7 @@ public class Shop extends JLabel
         rareUpgrades.add(new Upgrade("x~ Fruit Damage, x` Vehicle Damage, x` Tool Damage","Fruit Mutation",15,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Vehicle Damage, x` Fruit Damage, x` Tool Damage","Vehicle Mutation",16,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Max Health, -` Seeds Upon Round Completion","Absolute Unit",17,0,1,3,12));
-        rareUpgrades.add(new Upgrade("+~% For Obstacles To Disappear After Spawning","Mogged to Death",18,0,1,5,10));
+        rareUpgrades.add(new Upgrade("+~% For Obstacles To Disappear After Spawning","Scram(bled)",18,0,1,5,10));
         rareUpgrades.add(new Upgrade("+~ Max Health, +_ Seeds Upon Round Completion","Bandage",19,0,1,5,13));
         rareUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance, x' Damage Received","Googly Goggles",20,0,1,5,15));
         rareUpgrades.add(new Upgrade("+~ Max Health, +_% Health Regeneration Speed, -' Seeds Upon Round Completion","Objective: Survive",21,0,1,3,15));
@@ -175,6 +184,17 @@ public class Shop extends JLabel
     }
     public void updateShop(ActionEvent e)
     {
+        if(playerInventory.getSeed()>rerollPrice)
+        {
+            playerInventory.setSeed(playerInventory.getSeed()-rerollPrice);
+            rerollPrice += 2+(gameplay.getRound()/5);
+            updateSeedCount();
+            rerollButton.setText("REROLL ("+ rerollPrice + " Seeds)");
+        }
+        else
+        {
+            return;
+        }
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
         upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon());
         upgradeChoice1.setVisible(true);
@@ -263,6 +283,14 @@ public class Shop extends JLabel
         shopItemIcons[3] = ArtOfTheCatIcon;
         shopItemIcons[4] = FeatheringHeightsIcon;
     }
+    public void instantiateUpgradeIcons()
+    {
+        try {
+            upgradeIcons.add(ImageIO.read(new File("Images/ThingieRooster.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void setGameplay(Gameplay gameplay)
     {
         this.gameplay = gameplay;
@@ -273,6 +301,7 @@ public class Shop extends JLabel
         setVisible(false);
         gameplay.updateStats();
         updateShop(actionEvent);
+        rerollPrice = 6+(gameplay.getRound()/2);
         for(int i=0;i<commonUpgrades.size();i++)
         {
             commonUpgrades.get(i).printUpgradeInfo();
@@ -313,5 +342,21 @@ public class Shop extends JLabel
     public Inventory getPlayerInventory()
     {
         return playerInventory;
+    }
+    public ArrayList<Upgrade> getCommonUpgrades()
+    {
+        return commonUpgrades;
+    }
+    public ArrayList<Upgrade>  getRareUpgrades()
+    {
+        return rareUpgrades;
+    }
+    public ArrayList<Upgrade>  getEpicUpgrades()
+    {
+        return epicUpgrades;
+    }
+    public ArrayList<Upgrade>  getLegendaryUpgrades()
+    {
+        return legendaryUpgrades;
     }
 }
