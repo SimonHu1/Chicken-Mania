@@ -214,6 +214,22 @@ public class Shop extends JLabel
 //        rerollButton.setVisible(false);
 
     }
+    public void applyCommonUpgrades()
+    {
+        for(int i = 0; i<commonUpgrades.size(); i++)
+        {
+            if(commonUpgrades.get(i).getUpgradeLevel()>0)
+            {
+                switch(i)
+                {
+                    case 0:
+                    {
+                        gameplay.setBaseStats(0,1,commonUpgrades.get(i).get);
+                    }
+                }
+            }
+        }
+    }
     public ArrayList<Upgrade> randomUpgrades()
     {
         ArrayList<Upgrade> upgradeForRound = new ArrayList<>();

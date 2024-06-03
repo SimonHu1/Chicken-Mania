@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class Gameplay extends JLayeredPane implements ActionListener {
     private Inventory playerInventory = new Inventory();
+    private double[][] baseStats = new double[16][3];
     private int characterY = 200; // Initial character position
     private double yVelocity = 0; // Initial vertical velocity
     private double gravity = 16; // Gravity acceleration
@@ -26,7 +27,6 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private ArrayList<BufferedImage> rareUpgradeIcons = new ArrayList<>();
     private ArrayList<BufferedImage> epicUpgradeIcons = new ArrayList<>();
     private ArrayList<BufferedImage> legendaryUpgradeIcons = new ArrayList<>();
-
     private Timer timer;
     private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     private JButton shopButton = new JButton("SHOP");
@@ -36,6 +36,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private double[] activePowerups = new double[3]; //1.0 = Proteggtion, 2.0 = pecking machine, 3.0 = Archaic Call
     private Shop shop;
     public Gameplay() {
+        updateBaseStats();
         round=1;
         jumpCount=9;
         this.playerInventory = new Inventory();
@@ -584,6 +585,35 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         updateStats();
         run=true;
         shop.setVisible(false);
+    }
+    public void updateBaseStats()
+    {
+        //0 = health, 1 = jumps, 2 = parry strength, 3 = max turboflaps, 4 = seeds upon round completion
+        //5 = archaic call spawn chance, 6 = proteggtion spawn chance, 7 = 2x seed spawn chance, seeds during round spawn chance
+        //8 = turboflap regeneration speed, 9 = time between parries, 10 = health regeneration speed
+        //11 = tool damage, 12 = fruit damage, 13 = vehicle damage, 14 = obstacles to disappear after spawning
+        //15 = health per successful parry
+        //column 0 = base, column 1 = additive, column 2 = multiplicative
+        baseStats[0][0] = 3 + (round/2);
+        baseStats[1][0] = 9 + round;
+        baseStats[2][0] = 2 + (round/3);
+        baseStats[3][0] = 1 + (round/10);
+        baseStats[4][0] = 8 + (round*3/2);
+        baseStats[5][0] = 3 + (round/6);
+        baseStats[6][0] = 3 + (round/6);
+        baseStats[7][0] = 3 + (round/6);
+        baseStats[8][0] = 2 + (round/10);
+        baseStats[9][0] = 1;
+        baseStats[10][0] = 1;
+        baseStats[11][0] = 2+(round/3);
+        baseStats[12][0] = 1+(round/5);
+        baseStats[13][0] = 8+(round/3);
+        baseStats[14][0] = 0;
+        baseStats[15][0] = 0;
+    }
+    public void setBaseStats(int statIndex, int columnNum, double val)
+    {
+        baseStats[statIndex][columnNum] = val;
     }
     public void setRun(boolean b)
     {

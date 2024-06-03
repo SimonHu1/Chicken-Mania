@@ -54,4 +54,8 @@ public class Upgrade
     {
         System.out.println("Upgrade Name: " + upgradeName + " Upgrade Level: " + upgradeLevel + " Upgrade Rarity: " + upgradeRarity);
     }
+    public double[][] getBuff()
+    {
+        return buff;
+    }
 }
