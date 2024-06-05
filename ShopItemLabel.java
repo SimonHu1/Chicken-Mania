@@ -31,7 +31,7 @@ public class ShopItemLabel extends JLabel
         itemNumber = upgrade.getUpgradeID();
         System.out.println(getCost());
         costField.setText("Cost: " + getCost());
-        this.description.setText(upgrade.getDescription());
+        this.description.setText(updatedItemDescription(upgrade));
         this.description.setFont(new Font("Monospaced", Font.BOLD, 20));
         itemName.setFont(new Font("Monospaced", Font.BOLD, 20));
         costField.setFont(new Font("Monospaced", Font.BOLD, 20));
@@ -61,7 +61,7 @@ public class ShopItemLabel extends JLabel
         itemName.setText(upgrade.getUpgradeName());
         itemNumber = upgrade.getUpgradeID();
         costField.setText("Cost: " + getCost());
-        this.description.setText(upgrade.getDescription());
+        this.description.setText(updatedItemDescription(upgrade));
     }
     public int getCost()
     {
@@ -108,6 +108,28 @@ public class ShopItemLabel extends JLabel
             }
         }
         this.setVisible(false);
+    }
+    public String updatedItemDescription(Upgrade up)
+    {
+        String temp = up.getDescription();
+        if(temp.contains("~"))
+        {
+            temp = temp.replace("~",checkIntOrDouble(up.getBuff()[0][up.getUpgradeLevel()]));
+        }
+        if(temp.contains("'"))
+        {
+            temp =  temp.replace("'",checkIntOrDouble(up.getBuff()[1][up.getUpgradeLevel()]));
+        }
+        if(temp.contains("_"))
+        {
+            temp = temp.replace("_",checkIntOrDouble(up.getBuff()[2][up.getUpgradeLevel()]));
+        }
+        return temp;
+    }
+    public String checkIntOrDouble(double val)
+    {
+        if(val*10==((int)val)*10) return (int)val+"";
+        else return val+"";
     }
     public Upgrade getUpgrade()
     {

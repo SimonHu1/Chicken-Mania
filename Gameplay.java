@@ -15,13 +15,13 @@ import java.util.ArrayList;
 
 public class Gameplay extends JLayeredPane implements ActionListener {
     private Inventory playerInventory = new Inventory();
-    private double[][] baseStats = new double[16][3];
+    private double[][] baseStats = new double[17][3];
     private int characterY = 200; // Initial character position
     private double yVelocity = 0; // Initial vertical velocity
     private double gravity = 16; // Gravity acceleration
-    private int jumpCount, cd, lives, seedsThisRun, eggShield, round;
+    private int jumpCount, cd, lives, seedsThisRun, eggShield, round, parryStrength;
     private final int PIXELS_PER_METER = 50; // Conversion factor for physics simulation
-    private double airTime, timeUntilNextJump, time, parryUptime, parryCooldown;
+    private double airTime, timeUntilNextJump, time, parryUptime, parryCooldown, spamJumpCD;
     private ArrayList<BufferedImage> imagesArray = new ArrayList<>();
     private ArrayList<BufferedImage> commonUpgradeIcons = new ArrayList<>();
     private ArrayList<BufferedImage> rareUpgradeIcons = new ArrayList<>();
@@ -37,7 +37,8 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private Shop shop;
     public Gameplay() {
         updateBaseStats();
-        round=1;
+        makeMultiplicativeOne();
+        round=0;
         jumpCount=9;
         this.playerInventory = new Inventory();
         this.shop = new Shop(this, this.playerInventory);
@@ -78,7 +79,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_S && shop.getRareUpgrades().get(0).getUpgradeLevel()==1) {
-                    changeY(-10);
+                    changeY(-8);
                 }
             }
         });
@@ -231,6 +232,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         yVelocity += gravity;
         airTime+=0.1;
         time+=0.015;
+        spamJumpCD-=0.008;
         parryUptime-=0.04;
         parryCooldown-=0.015;
         for(int i = 0; i<2; i++)
@@ -260,7 +262,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             yVelocity = 0;
             airTime = 0.0;
             timeUntilNextJump = 0.0;
-            jumpCount = 9+playerInventory.getUpgrades()[4]*3;
+            jumpCount = (int)baseStats[1][0];
         }
         if(characterY <= 0)
         {
@@ -269,6 +271,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         }
     }
     public void jump() {
+        if(jumpCount==0) return;
         if ((characterY == getHeight() - 180)||(jumpCount>0&&airTime>0.5&&timeUntilNextJump>1.0))
         {
             yVelocity = -12 * PIXELS_PER_METER;
@@ -285,7 +288,13 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     }
     public void changeY(int v)
     {
+        if(jumpCount==0) return;
         yVelocity = -v * PIXELS_PER_METER;
+        if(spamJumpCD<0)
+        {
+            jumpCount--;
+            spamJumpCD=0.2;
+        }
     }
     public void updateObstacles()
     {
@@ -574,25 +583,45 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     {
         seedsThisRun = 0;
         time = 0.0;
-        lives = 3+playerInventory.getUpgrades()[3];
-        jumpCount = 9+playerInventory.getUpgrades()[4]*3;
         yVelocity=0;
+        lives=1;
         obstacles = new ArrayList<>();
         activePowerups = new double[]{0.0,0.0,0.0};
+        updateBaseStats();
+        shop.applyAllUpgrades();
+        applyStats();
     }
-    public void playAgain(ActionEvent event)
+    public void applyStats()
     {
-        updateStats();
-        run=true;
-        shop.setVisible(false);
+        for(int i = 0; i<baseStats.length; i++)
+        {
+            System.out.println(i);
+            for(int u = 1; u<baseStats[0].length; u++)
+            {
+                if(u==1)
+                {
+                    baseStats[i][0] += baseStats[i][u];
+                    System.out.println("ADDED VALUE:" + baseStats[i][u]);
+                }
+                if(u==2)
+                {
+                    baseStats[i][0] *= baseStats[i][u];
+                    System.out.println("Multiplied VALUE:" + baseStats[i][u]);
+                }
+            }
+        }
+        lives = (int)baseStats[0][0];
+        System.out.println("HEALTH"+ (int)baseStats[0][0]);
+        jumpCount = (int)baseStats[1][0];
+        parryStrength = (int)baseStats[2][0];
     }
     public void updateBaseStats()
     {
         //0 = health, 1 = jumps, 2 = parry strength, 3 = max turboflaps, 4 = seeds upon round completion
-        //5 = archaic call spawn chance, 6 = proteggtion spawn chance, 7 = 2x seed spawn chance, seeds during round spawn chance
-        //8 = turboflap regeneration speed, 9 = time between parries, 10 = health regeneration speed
-        //11 = tool damage, 12 = fruit damage, 13 = vehicle damage, 14 = obstacles to disappear after spawning
-        //15 = health per successful parry
+        //5 = archaic call spawn chance, 6 = proteggtion spawn chance, 7 = 2x seed spawn chance, 8 = seeds during round spawn chance
+        //9 = turboflap regeneration speed, 10 = time between parries, 11 = health regeneration speed
+        //12 = tool damage, 13 = fruit damage, 14 = vehicle damage, 15 = obstacles to disappear after spawning
+        //16 = health per successful parry
         //column 0 = base, column 1 = additive, column 2 = multiplicative
         baseStats[0][0] = 3 + (round/2);
         baseStats[1][0] = 9 + round;
@@ -603,17 +632,32 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         baseStats[6][0] = 3 + (round/6);
         baseStats[7][0] = 3 + (round/6);
         baseStats[8][0] = 2 + (round/10);
-        baseStats[9][0] = 1;
-        baseStats[10][0] = 1;
-        baseStats[11][0] = 2+(round/3);
-        baseStats[12][0] = 1+(round/5);
-        baseStats[13][0] = 8+(round/3);
-        baseStats[14][0] = 0;
+        baseStats[9][0] = 100;
+        baseStats[10][0] = 100;
+        baseStats[11][0] = 100-(round/3);
+        baseStats[12][0] = 2+(round/3);
+        baseStats[13][0] = 1+(round/5);
+        baseStats[14][0] = 8+(round/3);
         baseStats[15][0] = 0;
+        baseStats[16][0] = 0;
     }
     public void setBaseStats(int statIndex, int columnNum, double val)
     {
-        baseStats[statIndex][columnNum] = val;
+        if(columnNum==1)
+        {
+            baseStats[statIndex][1] = baseStats[statIndex][1]+val;
+        }
+        else
+        {
+            baseStats[statIndex][2] = 1*baseStats[statIndex][2]*val;
+        }
+    }
+    public void makeMultiplicativeOne()
+    {
+        for(int i = 0; i<baseStats.length; i++)
+        {
+            baseStats[i][2] = 1;
+        }
     }
     public void setRun(boolean b)
     {
