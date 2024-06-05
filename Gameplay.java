@@ -163,12 +163,13 @@ public class Gameplay extends JLayeredPane implements ActionListener {
             insertionSorter(obstacles);
 //            endScreen.setVisible(true);
             shop.setVisible(true);
+            System.out.println("SEEDS THIS RUN" + seedsThisRun);
+            playerInventory.setLastRoundSeed(seedsThisRun);
+            System.out.println("SEEDS BEFORE RUN" + playerInventory.getSeed());
+            playerInventory.setSeed(playerInventory.getSeed()+seedsThisRun);
             shop.updateSeedCount();
             shop.updateInventory(playerInventory);
             run = false;
-            deathText.setText("SEEDS RECEIVED: " + seedsThisRun);
-            int seedsReceived = seedsThisRun;
-            playerInventory.setSeed(playerInventory.getSeed()+seedsReceived);
         }
         if(time>999)
         {

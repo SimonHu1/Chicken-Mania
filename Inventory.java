@@ -2,6 +2,7 @@ public class Inventory
 {
     private int seed;
     private int[] upgrades;
+    private int lastRoundSeed;
     public Inventory()
     {
         seed = 10000;
@@ -9,9 +10,9 @@ public class Inventory
         //first number indicates type
         //second number indicates upgrade level or true/false
     }
-    public  int getSeed()
+    public void setLastRoundSeed(int s)
     {
-        return seed;
+        lastRoundSeed = s;
     }
     public void setSeed(int c)
     {
@@ -21,7 +22,11 @@ public class Inventory
     {
         upgrades[n]++;
     }
-
+    public int getSeed()
+    {
+        return seed;
+    }
+    public int getLastRoundSeed() {return lastRoundSeed;}
     public int[] getUpgrades()
     {
         return upgrades;

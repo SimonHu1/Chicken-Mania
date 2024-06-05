@@ -19,6 +19,7 @@ public class Shop extends JLabel
     private ShopItemLabel upgradeChoice1, upgradeChoice2, upgradeChoice3, upgradeChoice4;
     private Gameplay gameplay;
     private JLabel seedCount = new JLabel();
+    private JLabel seedsReceivedFromLastRound = new JLabel();
     private JButton rerollButton = new JButton("REROLL");
     private JButton startRun = new JButton("START RUN");
     private ImageIcon[] shopItemIcons = new ImageIcon[5];
@@ -33,6 +34,10 @@ public class Shop extends JLabel
         seedCount.setBounds(50,-6,800,100);
         seedCount.setFont(new Font("Monospaced", Font.BOLD, 60));
         seedCount.setForeground(new Color(61, 41, 0));
+        seedsReceivedFromLastRound.setText("+"+playerInventory.getLastRoundSeed());
+        seedsReceivedFromLastRound.setBounds(920,-6,800,100);
+        seedsReceivedFromLastRound.setFont(new Font("Monospaced", Font.BOLD, 60));
+        seedsReceivedFromLastRound.setForeground(new Color(61, 41, 0));
         this.playerInventory = playerInventory;
         setBounds(390, 0,1130,970);
         setOpaque(true);
@@ -59,6 +64,7 @@ public class Shop extends JLabel
         add(startRun);
         add(rerollButton);
         add(seedCount);
+        add(seedsReceivedFromLastRound);
     }
     public void instantiateUpgradePool()
     {
@@ -101,7 +107,7 @@ public class Shop extends JLabel
         epicUpgrades.add(new Upgrade("x~ Fruit Damage, -' Max Health","Fruit Fiend",27,0,2,3,17));
         epicUpgrades.add(new Upgrade("x~ Vehicle Damage, -' Seeds Upon Round Completion","Vehicle Venerator",28,0,2,3,17));
         epicUpgrades.add(new Upgrade("x~ Tool Damage, x' Time Between Parries","Tool Tolerance",29,0,2,3,17));
-        epicUpgrades.add(new Upgrade("x2 Parry Strength, -20% Time Between Parries, x0 Powerup Spawn Chance","1v20",30,0,2,1,22));
+        epicUpgrades.add(new Upgrade("x2 Parry Strength, -20% Time Between Parries, x0 Powerup Spawn Chance","Solo Mission",30,0,2,1,22));
         legendaryUpgrades.add(new Upgrade("Parries Have A ~% To Create Eggsplosions","EGGSPLOSION",31,0,3,3,35));
         legendaryUpgrades.add(new Upgrade("x~ Max Health","Supersize Me",31,0,32,3,30));
         legendaryUpgrades.add(new Upgrade("+66 Max Health, x0 Max Turboflaps, x0 Jumps","Grounded",33,0,3,1,30));
@@ -213,6 +219,24 @@ public class Shop extends JLabel
         }
 //        rerollButton.setVisible(false);
 
+    }
+    public void updateShop()
+    {
+        ArrayList<Upgrade> upgradesForRound = randomUpgrades();
+        upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice1.setVisible(true);
+        upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice2.setVisible(true);
+        upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice3.setVisible(true);
+        System.out.println(upgradesForRound.get(0).getUpgradeName());
+        System.out.println(upgradesForRound.get(1).getUpgradeName());
+        System.out.println(upgradesForRound.get(2).getUpgradeName());
+        if(upgradesForRound.size()==4)
+        {
+            upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon());
+            upgradeChoice4.setVisible(true);
+        }
     }
     public void applyCommonUpgrades()
     {
@@ -550,7 +574,7 @@ public class Shop extends JLabel
         gameplay.setRun(true);
         setVisible(false);
         gameplay.updateStats();
-        updateShop(actionEvent);
+        updateShop();
         rerollPrice = 6+(gameplay.getRound()/2);
         for(int i=0;i<commonUpgrades.size();i++)
         {
@@ -572,6 +596,7 @@ public class Shop extends JLabel
     public void updateSeedCount()
     {
         seedCount.setText("SEEDS:"+playerInventory.getSeed());
+        seedsReceivedFromLastRound.setText("+"+playerInventory.getLastRoundSeed());
     }
     public void updateInventory(Inventory inventory){playerInventory=inventory;}
     public void incrementUpgrade(int upgradeID, int upgradeRarity)
