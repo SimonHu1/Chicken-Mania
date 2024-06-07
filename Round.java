@@ -38,7 +38,7 @@ public class Round
             }
             case 3:
             {
-                baseRound(10,5,90);
+                baseRound(10,5,5);
                 waveTime = 20.0;
                 break;
             }
