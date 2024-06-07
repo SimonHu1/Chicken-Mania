@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
@@ -17,7 +20,9 @@ import java.util.ArrayList;
 
 public class Gameplay extends JLayeredPane implements ActionListener {
     private Inventory playerInventory = new Inventory();
-    private Round roundManager = new Round(20,this);
+    private Clip mainTheme;
+    private Clip shopTheme;
+    private Round roundManager = new Round(1,this);
     private double[][] baseStats = new double[17][3];
     private boolean[] keyTracker = new boolean[3];
     private int characterY = 200; // Initial character position
@@ -38,9 +43,12 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     private ArrayList<Effect> effects = new ArrayList<>();
     private JButton shopButton = new JButton("SHOP");
+    private JButton startButton = new JButton("START");
     private JTextField deathText = new JTextField();
     private JTextField congratsText = new JTextField();
+    private JTextArea startText = new JTextArea();
     private JPanel endScreen = new JPanel();
+    private JPanel startScreen = new JPanel();
     private boolean run, containsTractor;
     private double[] activePowerups = new double[3]; //1.0 = Proteggtion, 2.0 = pecking machine, 3.0 = Archaic Call
     private Shop shop;
@@ -48,6 +56,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         updateBaseStats();
         instantiateBars();
         makeMultiplicativeOne();
+        initalizeStartScreen();
         inititalizeEndScreen();
         jumpCount=9;
         maxTurboflap=3;
@@ -56,7 +65,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         seedsThisRun=0;
         run = false;
         initializeShop();
-        shop.setVisible(true);
+        shop.setVisible(false);
         lives = 30;
         timer = new Timer(10, this); // 200 FPS (1000 ms / 200)
         timer.start();
@@ -138,6 +147,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         if(imagesArray.size()!=15) return;
+        if(shop.getUpgradeIcons().size()!=36) return;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setFont(new Font("Monospaced",Font.BOLD,40));
@@ -191,6 +201,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(imagesArray.size()!=15) return;
+        if(shop.getUpgradeIcons().size()!=36) return;
         if(!run) return;
         if(lives<=0)
         {
@@ -208,6 +219,9 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         {
             if(roundManager.getWaveTime()<time)
             {
+                shopButton.setVisible(true);
+                mainTheme.stop();
+                mainTheme.close();
                 time=1;
                 selectionSorter(obstacles);
                 insertionSorter(obstacles);
@@ -444,6 +458,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                         if(parryUptime>0&&parryStrength>=o.getDamage())
                         {
                             o.setParried(true);
+                            playParrySound();
                             o.setIcon(imagesArray.get(11));
                             cd=15;
                             lives+=(int)baseStats[16][0];
@@ -469,6 +484,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                         if(parryUptime>0&&parryStrength>=o.getDamage())
                         {
                             o.setParried(true);
+                            playParrySound();
                             o.setIcon(imagesArray.get(12));
                             cd=15;
                             lives+=(int)baseStats[16][0];
@@ -494,6 +510,7 @@ public class Gameplay extends JLayeredPane implements ActionListener {
                         if(parryUptime>0&&parryStrength>=o.getDamage())
                         {
                             o.setParried(true);
+                            playParrySound();
                             o.setPos(0,5000);
                             cd=15;
                             lives+=(int)baseStats[16][0];
@@ -658,6 +675,32 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         congratsText.setForeground(Color.green);
         initializeButtons();
     }
+    public void initalizeStartScreen()
+    {
+        add(startScreen);
+        startScreen.add(startText);
+        startScreen.add(startButton);
+        startScreen.setVisible(true);
+        startScreen.setLayout(null);
+        startScreen.setBounds(460,200,1000,700);
+        startScreen.setBackground(new Color(224, 181, 61));
+        startScreen.setBorder(new LineBorder(Color.BLACK,12));
+        startText.setBounds(70,150,2000,300);
+        startText.setOpaque(false);
+        startText.setEditable(false);
+        startText.setBorder(null);
+        startText.setFont(new Font("Monospaced", Font.BOLD, 35));
+        startText.setForeground(new Color(46, 31, 0));
+        startText.setLineWrap(true);
+        startText.setWrapStyleWord(true);
+        startText.append("Beat 20 Rounds to Win!\n");
+        startText.append("You can access the shop after every round\n");
+        startText.append("Left Click to Parry\n");
+        startText.append("W to jump\n");
+        startText.append("S to fall (w/ certain upgrade)\n");
+        startText.append("W or S and Space to Turboflap");
+        startText.setFocusable(false);
+    }
     public void initializeButtons()
     {
         shopButton.setFont(new Font("Monospaced", Font.BOLD, 60));
@@ -667,6 +710,13 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         shopButton.setForeground(new Color(46, 31, 0));
         shopButton.setBorder(new LineBorder(new Color(46, 31, 0),8));
         shopButton.setFocusPainted(false);
+        startButton.setFont(new Font("Monospaced", Font.BOLD, 60));
+        startButton.addActionListener(this::goShop);
+        startButton.setBounds(300,550,400,100);
+        startButton.setBackground(Color.red);
+        startButton.setForeground(new Color(46, 31, 0));
+        startButton.setBorder(new LineBorder(new Color(46, 31, 0),8));
+        startButton.setFocusPainted(false);
     }
     public void instantiateBars()
     {
@@ -765,9 +815,11 @@ public class Gameplay extends JLayeredPane implements ActionListener {
     }
     public void goShop(ActionEvent event)
     {
+        startScreen.setVisible(false);
         endScreen.setVisible(false);
         shop.setVisible(true);
         shop.updateSeedCount();
+        playShopMusic();
     }
     public void updateStats()
     {
@@ -811,6 +863,9 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         jumpCount = (int)baseStats[1][0];
         parryStrength = (int)baseStats[2][0];
         maxTurboflap = (int)baseStats[3][0];
+        playGameMusic();
+        shopTheme.stop();
+        shopTheme.close();
     }
     public void updateBaseStats()
     {
@@ -854,6 +909,36 @@ public class Gameplay extends JLayeredPane implements ActionListener {
         for(int i = 0; i<baseStats.length; i++)
         {
             baseStats[i][2] = 1;
+        }
+    }
+    public void playParrySound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Audio/ULTRAKILL Parry Sound Effect (1).wav").getAbsoluteFile());
+            Clip parryClip = AudioSystem.getClip();
+            parryClip.open(audioInputStream);
+            parryClip.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void playGameMusic() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Audio/Haikyuu!! OST - Lonely.wav").getAbsoluteFile());
+            mainTheme = AudioSystem.getClip();
+            mainTheme.open(audioInputStream);
+            mainTheme.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void playShopMusic() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Audio/Mewmore ⧸⧸ National Park (Pokémon Gold & Silver Remix) (1).wav").getAbsoluteFile());
+            shopTheme = AudioSystem.getClip();
+            shopTheme.open(audioInputStream);
+            shopTheme.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
     public void setRun(boolean b)

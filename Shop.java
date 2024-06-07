@@ -111,7 +111,7 @@ public class Shop extends JLabel
         legendaryUpgrades.add(new Upgrade("x~ Health","Eleggxir",31,0,32,3,30));
         legendaryUpgrades.add(new Upgrade("+66 Health, x0 Max Turboflaps, x0 Jumps","Grounded",33,0,3,1,30));
         legendaryUpgrades.add(new Upgrade("+15 Seeds Upon Round Win, x0.25 Health","All or Nothing",34,0,3,1,35));
-        legendaryUpgrades.add(new Upgrade("x~ Vehicle Damage, x~ Fruit Damage, x~ Tool Damage","Genetic Diff",35,0,3,10,10));
+        legendaryUpgrades.add(new Upgrade("x~ Vehicle Damage, x~ Fruit Damage, x~ Tool Damage","I have no enemies",35,0,3,10,10));
         setBuffs();
     }
     public void setBuffs()
@@ -163,9 +163,9 @@ public class Shop extends JLabel
     public void instantiateShop()
     {
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
-        upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon());
-        upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon());
-        upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice1 = new ShopItemLabel(this,upgradesForRound.get(0),new ImageIcon(upgradeIcons.get(upgradesForRound.get(0).getUpgradeID())));
+        upgradeChoice2 = new ShopItemLabel(this,upgradesForRound.get(1),new ImageIcon(upgradeIcons.get(upgradesForRound.get(1).getUpgradeID())));
+        upgradeChoice3 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon(upgradeIcons.get(upgradesForRound.get(2).getUpgradeID())));
         add(upgradeChoice1);
         add(upgradeChoice2);
         add(upgradeChoice3);
@@ -178,7 +178,7 @@ public class Shop extends JLabel
 //            add(upgradeChoice4);
 //            upgradeChoice4.setBounds(20,700,1200,300);
 //        }
-        upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice4 = new ShopItemLabel(this,upgradesForRound.get(2),new ImageIcon(upgradeIcons.get(upgradesForRound.get(2).getUpgradeID())));
         add(upgradeChoice4);
         upgradeChoice4.setVisible(false);
         upgradeChoice1.setBounds(20,84,1200,300);
@@ -201,18 +201,18 @@ public class Shop extends JLabel
             return;
         }
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
-        upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon(upgradeIcons.get(upgradesForRound.get(0).getUpgradeID())));
         upgradeChoice1.setVisible(true);
-        upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon(upgradeIcons.get(upgradesForRound.get(1).getUpgradeID())));
         upgradeChoice2.setVisible(true);
-        upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon(upgradeIcons.get(upgradesForRound.get(2).getUpgradeID())));
         upgradeChoice3.setVisible(true);
         System.out.println(upgradesForRound.get(0).getUpgradeName());
         System.out.println(upgradesForRound.get(1).getUpgradeName());
         System.out.println(upgradesForRound.get(2).getUpgradeName());
         if(upgradesForRound.size()==4)
         {
-            upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon());
+            upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon(upgradeIcons.get(upgradesForRound.get(3).getUpgradeID())));
             upgradeChoice4.setVisible(true);
 //            upgradeChoice4.setBounds(20,700,1200,300);
         }
@@ -222,18 +222,18 @@ public class Shop extends JLabel
     public void updateShop()
     {
         ArrayList<Upgrade> upgradesForRound = randomUpgrades();
-        upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon());
+        upgradeChoice1.updateLabel(upgradesForRound.get(0),new ImageIcon(upgradeIcons.get(upgradesForRound.get(0).getUpgradeID())));
         upgradeChoice1.setVisible(true);
-        upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon());
+        upgradeChoice2.updateLabel(upgradesForRound.get(1),new ImageIcon(upgradeIcons.get(upgradesForRound.get(1).getUpgradeID())));
         upgradeChoice2.setVisible(true);
-        upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon());
+        upgradeChoice3.updateLabel(upgradesForRound.get(2),new ImageIcon(upgradeIcons.get(upgradesForRound.get(2).getUpgradeID())));
         upgradeChoice3.setVisible(true);
         System.out.println(upgradesForRound.get(0).getUpgradeName());
         System.out.println(upgradesForRound.get(1).getUpgradeName());
         System.out.println(upgradesForRound.get(2).getUpgradeName());
         if(upgradesForRound.size()==4)
         {
-            upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon());
+            upgradeChoice4.updateLabel(upgradesForRound.get(3),new ImageIcon(upgradeIcons.get(upgradesForRound.get(3).getUpgradeID())));
             upgradeChoice4.setVisible(true);
         }
     }
@@ -485,56 +485,59 @@ public class Shop extends JLabel
         ArrayList<Upgrade> upgradeForRound = new ArrayList<>();
         int size = 3;
         if(epicUpgrades.get(4).getUpgradeLevel()==1) size++;
-        while(upgradeForRound.size()!=size)
+        getUpgrades(upgradeForRound,size);
+        return upgradeForRound;
+    }
+    public void getUpgrades(ArrayList upgradeForRound, int i)
+    {
+        if(i==upgradeForRound.size()) return;
+        int random = (int)(Math.random()*100)+1;
+        Upgrade placeholder;
+        if(random>96)
         {
-            int random = (int)(Math.random()*100)+1;
-            Upgrade placeholder;
-            if(random>96)
+            placeholder = legendaryUpgrades.get((int)(Math.random()*legendaryUpgrades.size()));
+            if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
             {
-                placeholder = legendaryUpgrades.get((int)(Math.random()*legendaryUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+                if(!upgradeForRound.contains(placeholder))
                 {
-                    if(!upgradeForRound.contains(placeholder))
-                    {
-                        upgradeForRound.add(placeholder);
-                    }
-                }
-            }
-            else if(random>85)
-            {
-                placeholder = epicUpgrades.get((int)(Math.random()*epicUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
-                {
-                    if(!upgradeForRound.contains(placeholder))
-                    {
-                        upgradeForRound.add(placeholder);
-                    }
-                }
-            }
-            else if(random>60)
-            {
-                placeholder = rareUpgrades.get((int)(Math.random()*rareUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
-                {
-                    if(!upgradeForRound.contains(placeholder))
-                    {
-                        upgradeForRound.add(placeholder);
-                    }
-                }
-            }
-            else
-            {
-                placeholder = commonUpgrades.get((int)(Math.random()*commonUpgrades.size()));
-                if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
-                {
-                    if(!upgradeForRound.contains(placeholder))
-                    {
-                        upgradeForRound.add(placeholder);
-                    }
+                    upgradeForRound.add(placeholder);
                 }
             }
         }
-        return upgradeForRound;
+        else if(random>85)
+        {
+            placeholder = epicUpgrades.get((int)(Math.random()*epicUpgrades.size()));
+            if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+            {
+                if(!upgradeForRound.contains(placeholder))
+                {
+                    upgradeForRound.add(placeholder);
+                }
+            }
+        }
+        else if(random>60)
+        {
+            placeholder = rareUpgrades.get((int)(Math.random()*rareUpgrades.size()));
+            if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+            {
+                if(!upgradeForRound.contains(placeholder))
+                {
+                    upgradeForRound.add(placeholder);
+                }
+            }
+        }
+        else
+        {
+            placeholder = commonUpgrades.get((int)(Math.random()*commonUpgrades.size()));
+            if(placeholder.getUpgradeLevel()<placeholder.getMaxUpgrades())
+            {
+                if(!upgradeForRound.contains(placeholder))
+                {
+                    upgradeForRound.add(placeholder);
+                }
+            }
+        }
+        getUpgrades(upgradeForRound,i);
     }
     public void applyAllUpgrades()
     {
@@ -546,28 +549,42 @@ public class Shop extends JLabel
     public void instantiateUpgradeIcons()
     {
         try {
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Chonk.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/PowerupBlessing.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Feathering Heights.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Archaic Call Seeker.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Proteggtion Seeker.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/2x Seed Seeker.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/4 Leaf Clover.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Archaic Call Seeker.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Bandage.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Chonk.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Current Objective Survive.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/EGGSPLOSION.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Eleggxir.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Feathering Heights.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Fruit Mutation.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Googly Glasses.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Service Seeds.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Industrial Wings.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Not Red Bull.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/PowerupBlessing.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Proteggtion Seeker.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Quick Claws.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Rapid Regeneration.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Razor Claws.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Seed Seeker.png")));
-            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Service Seeds.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Rapid Regeneration.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Flight Simulation.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Tool Mutation.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Fruit Mutation.png")));
             upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Vehicle Mutation.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Absolute Unit.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Scrambled.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Bandage.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Googly Glasses.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Current Objective Survive.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Cloud Nine.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Outsource.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Vitamins.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Shock Absorption.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/SightSeeing.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Fruit Fiend.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Vehicle Venerator.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Tool Tolerance.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Solo Mission.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/EGGSPLOSION.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Eleggxir.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Grounded.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/All or Nothing.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/I have no enemies.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -641,4 +658,5 @@ public class Shop extends JLabel
     {
         return legendaryUpgrades;
     }
+    public ArrayList<BufferedImage> getUpgradeIcons(){return upgradeIcons;}
 }

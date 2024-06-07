@@ -5,7 +5,7 @@ public class Inventory
     private int lastRoundSeed;
     public Inventory()
     {
-        seed = 10000;
+        seed = 15;
         upgrades = new int[]{0,0,0,0,0};
         //first number indicates type
         //second number indicates upgrade level or true/false
