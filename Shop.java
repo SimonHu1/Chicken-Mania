@@ -488,10 +488,8 @@ public class Shop extends JLabel
         getUpgrades(upgradeForRound,size);
         return upgradeForRound;
     }
-    public void getUpgrades(ArrayList upgradeForRound, int i)
+    public void tryRandomUpgrades(int random, ArrayList upgradeForRound)
     {
-        if(i==upgradeForRound.size()) return;
-        int random = (int)(Math.random()*100)+1;
         Upgrade placeholder;
         if(random>96)
         {
@@ -537,6 +535,12 @@ public class Shop extends JLabel
                 }
             }
         }
+    }
+    public void getUpgrades(ArrayList upgradeForRound, int i)
+    {
+        if(i==upgradeForRound.size()) return;
+        int random = (int)(Math.random()*100)+1;
+        tryRandomUpgrades(random,upgradeForRound);
         getUpgrades(upgradeForRound,i);
     }
     public void applyAllUpgrades()
