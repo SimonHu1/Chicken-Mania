@@ -36,6 +36,10 @@ public class Obstacle
         xVal = x;
         yVal = y;
     }
+    public void setIcon(BufferedImage icon)
+    {
+        this.icon = icon;
+    }
     public int getxVal()
     {
         return xVal;

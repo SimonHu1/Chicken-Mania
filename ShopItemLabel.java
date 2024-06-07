@@ -32,7 +32,7 @@ public class ShopItemLabel extends JLabel
         System.out.println(getCost());
         costField.setText("Cost: " + getCost());
         this.description.setText(updatedItemDescription(upgrade));
-        this.description.setFont(new Font("Monospaced", Font.BOLD, 20));
+        this.description.setFont(new Font("Monospaced", Font.BOLD, 17));
         itemName.setFont(new Font("Monospaced", Font.BOLD, 20));
         costField.setFont(new Font("Monospaced", Font.BOLD, 20));
         buyButton.setFont(new Font("Monospaced", Font.BOLD, 52));
@@ -128,7 +128,7 @@ public class ShopItemLabel extends JLabel
     }
     public String checkIntOrDouble(double val)
     {
-        if(val*10==((int)val)*10) return (int)val+"";
+        if(val*1000==((int)val)*1000) return (int)val+"";
         else return val+"";
     }
     public Upgrade getUpgrade()

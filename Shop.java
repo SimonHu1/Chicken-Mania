@@ -59,7 +59,6 @@ public class Shop extends JLabel
         rerollButton.setText("REROLL ("+ rerollPrice + " Seeds)");
         rerollButton.setFocusPainted(false);
         rerollButton.setVisible(true);
-        instantiateShopItemIcons();
         instantiateShop();
         add(startRun);
         add(rerollButton);
@@ -77,41 +76,41 @@ public class Shop extends JLabel
     public void instantiateUpgrades()
     {
         //~ then ' then _
-        commonUpgrades.add(new Upgrade("+~ Max Health","Chonk",0,0,0,99,5));
+        commonUpgrades.add(new Upgrade("+~ Health","Chonk",0,0,0,99,5));
         commonUpgrades.add(new Upgrade("x~ Buffs Received From Powerups","Powerup Blessing",1,0,0,99,3));
         commonUpgrades.add(new Upgrade("+~ Jumps","Feathering Heights",2,0,0,99,2));
         commonUpgrades.add(new Upgrade("x~ Archaic Call Spawn Chance","Archaic Call Seeker",3,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ Proteggtion Spawn Chance","Proteggtion Seeker",4,0,0,10,6));
         commonUpgrades.add(new Upgrade("x~ 2x Seed Spawn Chance","2x Seed Seeker",5,0,0,10,6));
-        commonUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance","4 Leaf Clover",6,0,0,3,7));
+        commonUpgrades.add(new Upgrade("x~ Seeds in Round Spawn Chance","4 Leaf Clover",6,0,0,3,7));
         commonUpgrades.add(new Upgrade("+~ Seeds Upon Round Completion","Service Seeds",7,0,0,3,7));
-        commonUpgrades.add(new Upgrade("+~ Max Turboflap","WINGS",8,0,0,2,8));
-        commonUpgrades.add(new Upgrade("+~% Turboflap Regeneration Speed","Freedom Flight",9,0,0,5,7));
+        commonUpgrades.add(new Upgrade("+~ Max Turboflap","Industrial Wings",8,0,0,2,8));
+        commonUpgrades.add(new Upgrade("+~% Turboflap Regeneration Speed","Not Red Bull",9,0,0,5,7));
         commonUpgrades.add(new Upgrade("-~% Time Between Parries","Quick Claws",10,0,0,10,6));
         commonUpgrades.add(new Upgrade("+~ Parry Strength","Razor Claws",11,0,0,10,5));
         commonUpgrades.add(new Upgrade("+~% Health Regeneration Speed","Rapid Regeneration",12,0,0,10,7));
-        rareUpgrades.add(new Upgrade("Complete Flight Control","Is It A Bird, Is It A Plane, It's... Both",13,0,1,1,44));
+        rareUpgrades.add(new Upgrade("Complete Flight Control","Flight Simulation",13,0,1,1,44));
         rareUpgrades.add(new Upgrade("x~ Tool Damage, x' Fruit Damage, x' Vehicle Damage","Tool Mutation",14,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Fruit Damage, x' Vehicle Damage, x' Tool Damage","Fruit Mutation",15,0,1,10,10));
         rareUpgrades.add(new Upgrade("x~ Vehicle Damage, x' Fruit Damage, x' Tool Damage","Vehicle Mutation",16,0,1,10,10));
-        rareUpgrades.add(new Upgrade("x~ Max Health, -' Seeds Upon Round Completion","Absolute Unit",17,0,1,3,12));
+        rareUpgrades.add(new Upgrade("x~ Health, -' Seeds Upon Round Win","Absolute Unit",17,0,1,3,12));
         rareUpgrades.add(new Upgrade("+~% For Obstacles To Disappear After Spawning","Scram(bled)",18,0,1,5,10));
-        rareUpgrades.add(new Upgrade("+~ Max Health, +' Seeds Upon Round Completion","Bandage",19,0,1,5,13));
-        rareUpgrades.add(new Upgrade("x~ Seeds during Round Spawn Chance, x' Damage Received","Googly Goggles",20,0,1,5,15));
-        rareUpgrades.add(new Upgrade("+~ Max Health, +'% Health Regeneration Speed, -_ Seeds Upon Round Completion","Objective: Survive",21,0,1,3,15));
+        rareUpgrades.add(new Upgrade("+~ Health, +' Seeds Upon Round Win","Bandage",19,0,1,5,13));
+        rareUpgrades.add(new Upgrade("x~ Seeds in Round Spawn Chance, x' Damage Received","Googly Glasses",20,0,1,5,15));
+        rareUpgrades.add(new Upgrade("+~ Health, +'% Health Regeneration Speed, -_ Seeds Upon Round Win","Objective: Survive",21,0,1,3,15));
         epicUpgrades.add(new Upgrade("+9 Jumps, +3 Max Turboflap","Cloud Nine",22,0,2,1,15));
         epicUpgrades.add(new Upgrade("x~ Powerup Spawn Chance, -' Max Turboflap","Outsource",23,0,2,3,15));
         epicUpgrades.add(new Upgrade("+~% Turboflap Regeneration Speed, +' Parry Strength","Nutrients",24,0,2,3,15));
         epicUpgrades.add(new Upgrade("+~ Health Per Successful Parry, -' Parry Strength","Shock Absorption",25,0,2,15,12));
-        epicUpgrades.add(new Upgrade("+1 Available Upgrade per Round, -2 Seeds Upon Round Completion","Sight Seeing",26,0,2,1,32));
-        epicUpgrades.add(new Upgrade("x~ Fruit Damage, -' Max Health","Fruit Fiend",27,0,2,3,17));
-        epicUpgrades.add(new Upgrade("x~ Vehicle Damage, -' Seeds Upon Round Completion","Vehicle Venerator",28,0,2,3,17));
+        epicUpgrades.add(new Upgrade("+1 Available Upgrade per Round, -2 Seeds Upon Round Win","Sight Seeing",26,0,2,1,32));
+        epicUpgrades.add(new Upgrade("x~ Fruit Damage, -' Health","Fruit Fiend",27,0,2,3,17));
+        epicUpgrades.add(new Upgrade("x~ Vehicle Damage, -' Seeds Upon Round Win","Vehicle Venerator",28,0,2,3,17));
         epicUpgrades.add(new Upgrade("x~ Tool Damage, x' Time Between Parries","Tool Tolerance",29,0,2,3,17));
         epicUpgrades.add(new Upgrade("x2 Parry Strength, -20% Time Between Parries, x0 Powerup Spawn Chance","Solo Mission",30,0,2,1,22));
         legendaryUpgrades.add(new Upgrade("Parries Have A ~% To Create Eggsplosions","EGGSPLOSION",31,0,3,3,35));
-        legendaryUpgrades.add(new Upgrade("x~ Max Health","Supersize Me",31,0,32,3,30));
-        legendaryUpgrades.add(new Upgrade("+66 Max Health, x0 Max Turboflaps, x0 Jumps","Grounded",33,0,3,1,30));
-        legendaryUpgrades.add(new Upgrade("+15 Seeds Upon Round Completion, x0.1 Max Health","All or Nothing",34,0,3,1,35));
+        legendaryUpgrades.add(new Upgrade("x~ Health","Eleggxir",31,0,32,3,30));
+        legendaryUpgrades.add(new Upgrade("+66 Health, x0 Max Turboflaps, x0 Jumps","Grounded",33,0,3,1,30));
+        legendaryUpgrades.add(new Upgrade("+15 Seeds Upon Round Win, x0.25 Health","All or Nothing",34,0,3,1,35));
         legendaryUpgrades.add(new Upgrade("x~ Vehicle Damage, x~ Fruit Damage, x~ Tool Damage","Genetic Diff",35,0,3,10,10));
         setBuffs();
     }
@@ -122,7 +121,7 @@ public class Shop extends JLabel
         for(int i=0;i<99;i++)
         {
             longUpgrade[i]=i+1;
-            multiplicativeLongUpgrade[i]=1+((i+1)/100);
+            multiplicativeLongUpgrade[i]=1+((i+2.0)/100);
         }
         commonUpgrades.get(0).setBuff(new double[][]{longUpgrade});
         commonUpgrades.get(1).setBuff(new double[][]{multiplicativeLongUpgrade});
@@ -158,7 +157,7 @@ public class Shop extends JLabel
         legendaryUpgrades.get(0).setBuff(new double[][]{{6,11,15}});
         legendaryUpgrades.get(1).setBuff(new double[][]{{1.9,3.7,5}});
         legendaryUpgrades.get(2).setBuff(new double[][]{{66},{0},{0}});
-        legendaryUpgrades.get(3).setBuff(new double[][]{{15},{0.1}});
+        legendaryUpgrades.get(3).setBuff(new double[][]{{15},{0.25}});
         legendaryUpgrades.get(4).setBuff(new double[][]{{0.91,0.833,0.77,0.71,0.666,0.625,0.588,0.555,0.526,0.5}});
     }
     public void instantiateShop()
@@ -370,7 +369,7 @@ public class Shop extends JLabel
                     {
                         gameplay.setBaseStats(0,1,rareUpgrades.get(i).getBuff()[0][rareUpgrades.get(i).getUpgradeLevel()-1]);
                         gameplay.setBaseStats(11,1,-1*rareUpgrades.get(i).getBuff()[1][rareUpgrades.get(i).getUpgradeLevel()-1]);
-                        gameplay.setBaseStats(4,2,-1*rareUpgrades.get(i).getBuff()[2][rareUpgrades.get(i).getUpgradeLevel()-1]);
+                        gameplay.setBaseStats(4,1,-1*rareUpgrades.get(i).getBuff()[2][rareUpgrades.get(i).getUpgradeLevel()-1]);
                         break;
                     }
                 }
@@ -544,23 +543,31 @@ public class Shop extends JLabel
         applyEpicUpgrades();
         applyLegendaryUpgrades();
     }
-    public void instantiateShopItemIcons()
-    {
-        ImageIcon ProteggtionIcon = new ImageIcon("Images/Proteggtion Powerup.png");
-        ImageIcon SeedGaloreIcon = new ImageIcon("Images/Seed Galore Powerup.png");
-        ImageIcon ArchaicCallIcon = new ImageIcon("Images/Archaic Call Powerup.png");
-        ImageIcon ArtOfTheCatIcon = new ImageIcon("Images/Art Of The Cat Upgrade.png");
-        ImageIcon FeatheringHeightsIcon = new ImageIcon("Images/Feathering Heights Upgrade.png");
-        shopItemIcons[0] = ProteggtionIcon;
-        shopItemIcons[1] = SeedGaloreIcon;
-        shopItemIcons[2] = ArchaicCallIcon;
-        shopItemIcons[3] = ArtOfTheCatIcon;
-        shopItemIcons[4] = FeatheringHeightsIcon;
-    }
     public void instantiateUpgradeIcons()
     {
         try {
-            upgradeIcons.add(ImageIO.read(new File("Images/ThingieRooster.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/2x Seed Seeker.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/4 Leaf Clover.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Archaic Call Seeker.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Bandage.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Chonk.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Current Objective Survive.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/EGGSPLOSION.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Eleggxir.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Feathering Heights.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Fruit Mutation.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Googly Glasses.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Industrial Wings.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Not Red Bull.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/PowerupBlessing.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Proteggtion Seeker.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Quick Claws.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Rapid Regeneration.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Razor Claws.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Seed Seeker.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Service Seeds.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Tool Mutation.png")));
+            upgradeIcons.add(ImageIO.read(new File("UpgradeIcons/Vehicle Mutation.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
